@@ -37,6 +37,8 @@
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {
+    "@types/node": "^20.14.9",
+    "hardhat": "^2.22.5",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3"
   },
@@ -44,6 +46,7 @@
     "node": ">=18.17.0"
   },
   "dependencies": {
-    "react-hook-form": "^7.52.0"
+    "save-dev": "^0.0.1-security",
+    "web3": "^4.10.0"
   }
 }
