@@ -52,6 +52,7 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
   }, [contractAddress]);
 
   const handleReportData = async (data: any, cid: string) => {
+    console.log(data, cid, "shooting..")
     setReportData({...data, cid});
   };
 
@@ -138,12 +139,15 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
       const gasPrice = await web3.eth.getGasPrice();
       const gasEstimate = await contractInstance.methods.runAgent(prompt, 6).estimateGas({ from: walletAddress });
       console.log("Gas Estimate:", gasEstimate);
+      console.log("checking...!")
+
 
       const tx = await contractInstance.methods.runAgent(prompt, 2).send({
         from: walletAddress,
         gas: gasEstimate,
         gasPrice,
       });
+      console.log("checking...")
 
       if (tx && tx.events && tx.events.AgentRunCreated && tx.events.AgentRunCreated.returnValues) {
         const runId = tx.events.AgentRunCreated.returnValues.runId;
@@ -174,7 +178,7 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
           console.log(messagesResponse,"response")
 
           if (messagesResponse) {
-            await UpdatePinataData(messagesResponse, reportData)
+            await UpdatePinataData(messagesResponse[2], reportData)
 
             console.log("defination saved")
           } else {

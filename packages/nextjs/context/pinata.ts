@@ -35,11 +35,12 @@ export const PinDataToPinata = async (data: IReportData, protectedCharacteristic
 };
 
 export const UpdatePinataData = async (protectedCharacteristics: string, content:any) => {
+  console.log(protectedCharacteristics, content,"check...")
   const { walletAddress } = useContract();
   const {cid, ...data} = content
 
   const body = {
-    ipfsPinHash:cid,
+    ipfsPinHash:"changed..",
     name: data.gameName,
     keyvalues: {
       ...data,

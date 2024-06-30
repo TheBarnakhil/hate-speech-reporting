@@ -1,4 +1,5 @@
 "use client";
+require("dotenv").config();
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
@@ -42,7 +43,7 @@ const Report = () => {
         "keyvalues": {
           ...data,
           "status": "Pending",
-          "protectedCharacteristics": [],
+          "protectedCharacteristics": '',
           "isProposal": 0,
           "walletAddress": address
         }
@@ -55,6 +56,7 @@ const Report = () => {
       headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     };
+  
 
     fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', options)
       .then(response => response.json())
