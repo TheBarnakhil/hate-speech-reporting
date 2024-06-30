@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 import { useContract } from "~~/context/contract";
 
+const pinataSDK = require('@pinata/sdk');
+
 type IReportFields = {
   hateSpeech: string;
   ignReporter: string;
@@ -12,7 +14,7 @@ type IReportFields = {
 };
 
 const Report = () => {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const { handleReportData, walletAddress,  reportHateSpeech} = useContract()
 
   const {
@@ -20,7 +22,41 @@ const Report = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IReportFields>();
-  const onSubmit: SubmitHandler<IReportFields> = data => reportHateSpeech(data);
+
+
+  const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
+
+  const onSubmit: SubmitHandler<IReportFields> = async (data: IReportFields) => {
+    console.log(data, "submitted data")
+
+    const body = {
+      "pinataMetadata": {
+        "name": data.gameName,
+        "keyvalues": {
+          ...data,
+          "status": "Pending",
+          "protectedCharacteristics": "",
+          "isProposal": 0,
+          "walletAddress": address
+        }
+      },
+      "pinataContent": data
+    }
+
+    const options = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    };
+
+    fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', options)
+      .then(response => response.json())
+      .then(response => console.log(response, "response"))
+      .catch(err => console.error(err));
+      
+      reportHateSpeech(data)
+  };
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
