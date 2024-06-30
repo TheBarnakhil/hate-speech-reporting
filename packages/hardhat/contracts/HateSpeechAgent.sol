@@ -42,18 +42,18 @@ contract HateSpeechAgent {
 
         config = IOracle.OpenAiRequest({
             model: "gpt-4-turbo-preview",
-            frequencyPenalty: 21, // > 20 for null
-            logitBias: "", // empty str for null
-            maxTokens: 1000, // 0 for null
-            presencePenalty: 21, // > 20 for null
+            frequencyPenalty: 21, 
+            logitBias: "", 
+            maxTokens: 1000, 
+            presencePenalty: 21,
             responseFormat: '{"type":"text"}',
-            seed: 0, // null
-            stop: "", // null
-            temperature: 10, // Example temperature (scaled up, 10 means 1.0), > 20 means null
-            topP: 101, // Percentage 0-100, > 100 means null
+            seed: 0,
+            stop: "", 
+            temperature: 10, 
+            topP: 101, 
             tools: '[{"type":"function","function":{"name":"web_search","description":"Search the internet","parameters":{"type":"object","properties":{"query":{"type":"string","description":"Search query"}},"required":["query"]}}},{"type":"function","function":{"name":"image_generation","description":"Generates an image using Dalle-2","parameters":{"type":"object","properties":{"prompt":{"type":"string","description":"Dalle-2 prompt to generate an image"}},"required":["prompt"]}}}]',
-            toolChoice: "auto", // "none" or "auto"
-            user: "" // null
+            toolChoice: "auto", 
+            user: "" 
         });
     }
 
@@ -153,7 +153,7 @@ contract HateSpeechAgent {
             if (run.responsesCount == 1) {
                 Message memory newMessage;
                 newMessage
-                    .content = "Please generate a cover letter based on the provided job description. The cover letter should highlight my suitability for the position, emphasizing my relevant skills and experiences. Include a compelling introduction, detailed body paragraphs that align my qualifications with the job requirements, and a strong conclusion with a clear call to action. It should include necessary tags to make the display appealing as a professional PDF or DOCX file.";
+                    .content = "";
                 newMessage.role = "user";
                 run.messages.push(newMessage);
                 IOracle(oracleAddress).createOpenAiLlmCall(runId, config);
@@ -161,7 +161,7 @@ contract HateSpeechAgent {
             } else if (run.responsesCount == 2) {
                 Message memory newMessage;
                 newMessage
-                    .content = "Please analyze the changes made between the initial resume and the newly generated tailored resume. Provide a percentage of how the new resume was tailored to the job description, highlighting specific changes and improvements. It should include necessary tags to make the display appealing as a professional PDF or DOCX file.";
+                    .content = "";
                 newMessage.role = "user";
                 run.messages.push(newMessage);
                 IOracle(oracleAddress).createOpenAiLlmCall(runId, config);

@@ -2,6 +2,7 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
+import { useContract } from "~~/context/contract";
 
 type IReportFields = {
   hateSpeech: string;
@@ -12,13 +13,14 @@ type IReportFields = {
 
 const Report = () => {
   const { isConnected } = useAccount();
+  const { handleReportData, walletAddress,  reportHateSpeech} = useContract()
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IReportFields>();
-  const onSubmit: SubmitHandler<IReportFields> = data => console.log(data);
+  const onSubmit: SubmitHandler<IReportFields> = data => reportHateSpeech(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -96,8 +98,8 @@ const Report = () => {
               </label>
             </div>
             <div className="card-actions justify-center items p-2">
-              <button type="submit" className="btn dark:btn-primary btn-accent" disabled={!isConnected}>
-                {isConnected ? "Report now!" : "Connect your wallet to report"}
+              <button type="submit" className="btn dark:btn-primary btn-accent" disabled={!walletAddress}>
+                {walletAddress ? "Report now!" : "Connect your wallet to report"}
               </button>
             </div>
           </div>
