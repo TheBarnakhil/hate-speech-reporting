@@ -2,6 +2,7 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
+import { notification } from "~~/utils/scaffold-eth";
 
 const pinataSDK = require('@pinata/sdk');
 
@@ -51,6 +52,8 @@ const Report = () => {
       .then(response => response.json())
       .then(response => console.log(response, "response"))
       .catch(err => console.error(err));
+
+    notification.success("Report created!")
   };
 
 
