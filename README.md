@@ -49,8 +49,7 @@ Before you begin, you need to install the following tools:
 
 ## Quickstart
 
-
-**What's next**:
+yarn install
 
 
 ## Documentation
