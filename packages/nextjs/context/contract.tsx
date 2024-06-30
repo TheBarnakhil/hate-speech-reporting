@@ -4,6 +4,7 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import abi from "../contractFile/HateSpeechAbi.json";
 import Web3 from "web3";
+import { PinDataToPinata } from "./pinata";
 
 require("dotenv").config();
 
@@ -29,11 +30,13 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
   const web3 = new Web3(window.ethereum as any);
   const contractAddress = "0x43f32a17254B738b3807cB75794C208CC2ad5f49";
 
-  // useEffect(() => {
+  useEffect(() => {
+    if(reportData){
+      reportHateSpeech(reportData)
+    }
 
-  //     reportHateSpeech()
 
-  // },[reportData])
+  },[reportData])
 
   useEffect(() => {
     const initializeContract = async () => {
@@ -52,7 +55,6 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
 
   const handleReportData = async (data: any) => {
     setReportData(data);
-    console.log(data, "kdle");
   };
 
   const connectToWallet = async () => {
@@ -172,6 +174,8 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         if (isFinished) {
           const messagesResponse = await getNewMessages(runId);
           console.log(messagesResponse,"response")
+
+          await PinDataToPinata(reportData, messagesResponse[2])
         } else {
           await new Promise(resolve => setTimeout(resolve, 5000));
         }
@@ -180,6 +184,7 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
       }
     }
   };
+
 
   const getNewMessages = async (runId: number) => {
     if (!contractInstance) {

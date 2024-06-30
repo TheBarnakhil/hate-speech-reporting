@@ -35,7 +35,7 @@ const Report = () => {
         "keyvalues": {
           ...data,
           "status": "Pending",
-          "protectedCharacteristics": "",
+          "protectedCharacteristics": [],
           "isProposal": 0,
           "walletAddress": address
         }
@@ -54,7 +54,7 @@ const Report = () => {
       .then(response => console.log(response, "response"))
       .catch(err => console.error(err));
       
-      reportHateSpeech(data)
+      handleReportData(data)
   };
 
 
