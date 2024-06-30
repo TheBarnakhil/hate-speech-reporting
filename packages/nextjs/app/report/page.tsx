@@ -13,22 +13,45 @@ type IReportFields = {
 };
 
 const Report = () => {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IReportFields>();
-  const onSubmit: SubmitHandler<IReportFields> = data => console.log(data);
 
-  // Use the api keys by providing the strings directly 
-const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
 
-// const 
-// const res = await pinata.testAuthentication()
-// console.log(res)
-// "message": "Congratulations! You are communicating with the Pinata API"!"
+  const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
+
+  const onSubmit: SubmitHandler<IReportFields> = async (data: IReportFields) => {
+    console.log(data, "submitted data")
+
+    const body = {
+      "pinataMetadata": {
+        "name": data.gameName,
+        "keyvalues": {
+          ...data,
+          "status": "Pending",
+          "protectedCharacteristics": "",
+          "isProposal": 0,
+          "walletAddress": address
+        }
+      },
+      "pinataContent": data
+    }
+
+    const options = {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    };
+
+    fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', options)
+      .then(response => response.json())
+      .then(response => console.log(response, "response"))
+      .catch(err => console.error(err));
+  };
 
 
   return (
