@@ -33,11 +33,34 @@ The community votes on the proposal to add new protected characteristic. This cl
 
 ## Product Roadmap
 
-Insert Roadmap
+**Voting mechanism**
+
+1. Implementation of the first voting algorithm and voting mechanism. With the starting point of “1 person 1 vote”, the voting weights change according to accumulation of LE points, lower/higher constraints to those weights.
+
+2. Perform simulations to assess various dynamics and edge cases, and to decide on alteration of the initial voting mechanism.
+
+3. Reassessment of the mechanism requirements, implementation and simulations after other steps from the roadmap are completed.
+
+**Increase community control over the LLM model**
+
+1. Test on more LLMs, in particular open source ones, compare which can perform well without fine tuning, and which require fine tuning.
+
+2. Community fine tuning: introduce the option for players to challenge the output of AI model by making a proposal to add their own experiences of being targeted by hate speech to training data.
+
+**Proactive moderation**
+
+After the community driven fine tuning leads to a model that performs well within the context of the game and with this particular community - it will be possible to start using the model to flag comments as potential hate speech while players are typing - and before they send the messages.
+
+This would make a version of **reinforcement learning from human feedback** (RLHF) but with the feedback provided by humans whose **incentives are aligned** with the purpose of the system/community.
 
 ## References
 
-Insert References
+Research on hate speech classification with few-shot classifiers, comparison of mdoels and prompting approaches
+
+[Guo, Keyan, et al. "An investigation of large language models for real-world hate speech detection." 2023 International Conference on Machine Learning and Applications (ICMLA). IEEE, 2023](https://ieeexplore.ieee.org/abstract/document/10459901).
+
+[Roy, Sarthak, et al. "Probing LLMs for hate speech detection: strengths and vulnerabilities." Findings of the Association for Computational Linguistics: EMNLP 2023. 2023](https://aclanthology.org/2023.findings-emnlp.407/).
+
 
 ## Requirements
 
@@ -49,13 +72,22 @@ Before you begin, you need to install the following tools:
 
 ## Quickstart
 
-yarn install
+Clone this repo & install dependencies
 
+```
+git clone https://github.com/TheBarnakhil/hate-speech-reporting.git
+cd hate-speech-reporting
+yarn install
+```
+
+Start the application
+```
+yarn start
+
+```
 
 ## Documentation
 
 
-
-## Contributing to Scaffold-ETH 2
 
 
