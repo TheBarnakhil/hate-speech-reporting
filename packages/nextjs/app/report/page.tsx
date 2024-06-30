@@ -3,6 +3,8 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 
+const pinataSDK = require('@pinata/sdk');
+
 type IReportFields = {
   hateSpeech: string;
   ignReporter: string;
@@ -19,6 +21,15 @@ const Report = () => {
     formState: { errors },
   } = useForm<IReportFields>();
   const onSubmit: SubmitHandler<IReportFields> = data => console.log(data);
+
+  // Use the api keys by providing the strings directly 
+const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
+
+// const 
+// const res = await pinata.testAuthentication()
+// console.log(res)
+// "message": "Congratulations! You are communicating with the Pinata API"!"
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
