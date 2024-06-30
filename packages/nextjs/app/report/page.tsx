@@ -24,10 +24,17 @@ const Report = () => {
   } = useForm<IReportFields>();
 
 
-  const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
+  // const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
 
   const onSubmit: SubmitHandler<IReportFields> = async (data: IReportFields) => {
-    console.log(data, "submitted data")
+    
+    const metaData = {
+      ...data,
+      "status": "Pending",
+      "protectedCharacteristics": [],
+      "isProposal": 0,
+      "walletAddress": address
+    }
 
     const body = {
       "pinataMetadata": {
@@ -51,10 +58,9 @@ const Report = () => {
 
     fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', options)
       .then(response => response.json())
-      .then(response => console.log(response, "response"))
-      .catch(err => console.error(err));
-      
-      handleReportData(data)
+      .then(response =>  handleReportData(metaData,response.IpfsHash))
+      .catch(err => console.error(err))
+    
   };
 
 

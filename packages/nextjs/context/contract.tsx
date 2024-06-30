@@ -4,14 +4,14 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import abi from "../contractFile/HateSpeechAbi.json";
 import Web3 from "web3";
-import { PinDataToPinata } from "./pinata";
+import { PinDataToPinata, UpdatePinataData  } from "./pinata";
 
 require("dotenv").config();
 
 interface ContractContextProps {
   connectToWallet: () => Promise<void>;
   disconnectWallet: () => Promise<void>;
-  handleReportData: (data: any) => Promise<void>;
+  handleReportData: (data: any, cid: string) => Promise<void>;
   reportHateSpeech: (data: any) => Promise<any>;
   walletAddress: string | null
 }
@@ -34,8 +34,6 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
     if(reportData){
       reportHateSpeech(reportData)
     }
-
-
   },[reportData])
 
   useEffect(() => {
@@ -53,8 +51,8 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
     initializeContract();
   }, [contractAddress]);
 
-  const handleReportData = async (data: any) => {
-    setReportData(data);
+  const handleReportData = async (data: any, cid: string) => {
+    setReportData({...data, cid});
   };
 
   const connectToWallet = async () => {
@@ -175,7 +173,14 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
           const messagesResponse = await getNewMessages(runId);
           console.log(messagesResponse,"response")
 
-          await PinDataToPinata(reportData, messagesResponse[2])
+          if (messagesResponse) {
+            await UpdatePinataData(messagesResponse, reportData)
+
+            console.log("defination saved")
+          } else {
+            console.log("No response")
+          }
+
         } else {
           await new Promise(resolve => setTimeout(resolve, 5000));
         }
