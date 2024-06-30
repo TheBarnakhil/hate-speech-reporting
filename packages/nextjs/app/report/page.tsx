@@ -3,6 +3,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 import { useContract } from "~~/context/contract";
+import { notification } from "~~/utils/scaffold-eth";
 
 const pinataSDK = require('@pinata/sdk');
 
@@ -61,6 +62,7 @@ const Report = () => {
       .then(response =>  handleReportData(metaData,response.IpfsHash))
       .catch(err => console.error(err))
     
+      notification.success("Report created!");
   };
 
 
