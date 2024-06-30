@@ -15,7 +15,7 @@ type Props = {
 
 export const Reports = ({ tab, setReport }: Props) => {
 
-    const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
+    // const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
 
     const [metadata, setMetadata] = useState<{reports : Array<IReport>}>(JSONMetadata)
 
@@ -45,8 +45,15 @@ export const Reports = ({ tab, setReport }: Props) => {
                             isProposal
                         }
                     }
+                }).filter((res: any) => res)
+                setMetadata(prevState => {
+                    return {
+                        reports : [
+                            ...preparedResponse,
+                            ...prevState.reports
+                        ]
+                    }
                 })
-                console.log(preparedResponse, "preparedResponse")
             })
             .catch(err => console.error(err));
 
