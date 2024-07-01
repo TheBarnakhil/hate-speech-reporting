@@ -57,7 +57,7 @@ This would make a version of **reinforcement learning from human feedback** (RLH
 
 ## References
 
-Research on hate speech classification with few-shot classifiers, comparison of mdoels and prompting approaches
+Research on hate speech classification with few-shot classifiers, comparison of models and prompting approaches
 
 [Guo, Keyan, et al. "An investigation of large language models for real-world hate speech detection." 2023 International Conference on Machine Learning and Applications (ICMLA). IEEE, 2023](https://ieeexplore.ieee.org/abstract/document/10459901).
 
