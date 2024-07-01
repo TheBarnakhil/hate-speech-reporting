@@ -15,6 +15,8 @@ We empower people with lived experience of online abuse to leverage AI and Web 3
 
 ## Why is this tool unique?
 
+The tool proposes combining web3 and AI tools to address the democratisation of ownership and governance of AI. The token engineering approach of responsible system design and aligning of incentives, paired with LLMs, create content moderation tool that has similarities to reinforcement learning from human feedback (RLHF), but it driven by community and common good. 
+
 Step 1. Self-reporting
 
 Players who experience hate speech have the option to report it.
@@ -85,9 +87,6 @@ Start the application
 yarn start
 
 ```
-
-## Documentation
-
 
 
 
