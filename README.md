@@ -10,26 +10,26 @@ We empower people with lived experience of online abuse to leverage AI and Web 3
 
 ## What does this tool do?
 
-<img width="855" alt="Screenshot 2024-06-30 at 21 56 52" src="https://github.com/TheBarnakhil/hate-speech-reporting/assets/142992581/c5c19676-36cb-475c-8754-01e8ce4648f0">
-<img width="865" alt="Screenshot 2024-06-30 at 21 57 10" src="https://github.com/TheBarnakhil/hate-speech-reporting/assets/142992581/9696ed25-40b3-4fc7-8c62-9859ae0b8949">
+<img width="840" alt="Screenshot 2024-07-01 at 00 51 55" src="https://github.com/TheBarnakhil/hate-speech-reporting/assets/142992581/fcf4a38a-ccad-4be4-b14c-2383bc41c530">
+<img width="833" alt="Screenshot 2024-07-01 at 00 50 21" src="https://github.com/TheBarnakhil/hate-speech-reporting/assets/142992581/cb015d06-6f32-4f17-9c84-5c02f25d21dd">
 
 ## Why is this tool unique?
 
 The tool proposes combining web3 and AI tools to address the democratisation of ownership and governance of AI. The token engineering approach of responsible system design and aligning of incentives, paired with LLMs, create content moderation tool that has similarities to reinforcement learning from human feedback (RLHF), but it driven by community and common good. 
 
-Step 1. Self-reporting
+**Step 1. Self-reporting**
 
 Players who experience hate speech have the option to report it.
 
-Step 2. Subjective vs imperfectly-objective
+**Step 2. Subjective vs imperfectly-objective**
 
 Reports are checked by an AI agent who classifies them as hate speech or not (wrt to some protected characteristic). Players get LE (lived experience) points if those two agree.
 
-Step 3. Challenging the imperfectly-objective
+**Step 3. Challenging the imperfectly-objective**
 
 Players can challenge the AI agent result. Currently the only case when the challenge can happen is if the player believes that the model needs to consider a new protected characteristic. The player can submit a proposal to add that new characteristic to the set used by the model in the definition of hate speech.
 
-Step 4. Subjective experience vs community values.
+**Step 4. Subjective experience vs community values.**
 
 The community votes on the proposal to add new protected characteristic. This closes the subjective vs objective cycle, as the individual knows how it felt to be targeted by hate speech, but the community as a whole decides on what are the values that the community want to live by.
 
