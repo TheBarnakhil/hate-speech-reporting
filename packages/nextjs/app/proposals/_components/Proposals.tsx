@@ -1,7 +1,7 @@
 'use client';
 
 import { ReportCard } from '~~/app/_components';
-import { metadata } from '~~/app/_metadata/metadata.ts'
+import { proposals as metadata } from '~~/app/_metadata/metadata.ts'
 import { IReport } from '~~/app/_types/index.ts';
 
 
