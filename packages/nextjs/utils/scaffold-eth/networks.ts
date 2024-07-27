@@ -34,9 +34,7 @@ export const RPC_CHAIN_NAMES: Record<number, string> = {
 };
 
 export const getAlchemyHttpUrl = (chainId: number) => {
-  return RPC_CHAIN_NAMES[chainId]
-    ? `https://${RPC_CHAIN_NAMES[chainId]}.g.alchemy.com/v2/${scaffoldConfig.alchemyApiKey}`
-    : undefined;
+  return undefined;
 };
 
 export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
@@ -119,10 +117,10 @@ export function getBlockExplorerAddressLink(network: chains.Chain, address: stri
   }
 
   if (!blockExplorerBaseURL) {
-    return `https://etherscan.io/address/${address}`;
+    return `https://explorer.galadriel.com/tx/${address}`;
   }
 
-  return `${blockExplorerBaseURL}/address/${address}`;
+  return `${blockExplorerBaseURL}/tx/${address}`;
 }
 
 /**

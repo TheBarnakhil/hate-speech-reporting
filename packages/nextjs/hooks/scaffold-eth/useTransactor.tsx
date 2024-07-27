@@ -1,15 +1,16 @@
 import { getPublicClient } from "@wagmi/core";
+import { TransactionReceipt } from "ethers";
+import { ethers } from "ethers";
 import { Hash, SendTransactionParameters, WalletClient } from "viem";
 import { Config, useWalletClient } from "wagmi";
 import { SendTransactionMutate } from "wagmi/query";
+import externalContracts from "~~/contracts/externalContract";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 import { getBlockExplorerTxLink, getParsedError, notification } from "~~/utils/scaffold-eth";
 import { TransactorFuncOptions } from "~~/utils/scaffold-eth/contract";
 
 type TransactionFunc = (
-  tx: (() => Promise<Hash>) | Parameters<SendTransactionMutate<Config, undefined>>[0],
-  options?: TransactorFuncOptions,
-) => Promise<Hash | undefined>;
+  tx: (() => Promise<Hash>)) => Promise<Hash>;
 
 /**
  * Custom notification content for TXs.
@@ -32,14 +33,34 @@ const TxnNotification = ({ message, blockExplorerLink }: { message: string; bloc
  * @param _walletClient - Optional wallet client to use. If not provided, will use the one from useWalletClient.
  * @returns function that takes in transaction function as callback, shows UI feedback for transaction and returns a promise of the transaction hash
  */
+
+const chainID = 696969;
+const { address: contractAddress } = externalContracts[chainID].HateSpeechAgent;
+
+const eventAbi = ["event AgentRunCreated(address indexed owner, uint256 indexed runId)"];
+
+const contract = new ethers.Contract(contractAddress, eventAbi);
+
+const decodeLogs = (logs: any, contract: any) => {
+  return logs
+    .map((log: any) => {
+      try {
+        return contract.interface.parseLog(log);
+      } catch (error) {
+        return null;
+      }
+    })
+    .filter((log: any) => log !== null);
+};
+
 export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => {
   let walletClient = _walletClient;
   const { data } = useWalletClient();
   if (walletClient === undefined && data) {
     walletClient = data;
   }
-
-  const result: TransactionFunc = async (tx, options) => {
+  
+  const result: any = async (tx: any) => {
     if (!walletClient) {
       notification.error("Cannot access account");
       console.error("⚡️ ~ file: useTransactor.tsx ~ error");
@@ -47,7 +68,7 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
     }
 
     let notificationId = null;
-    let transactionHash: Hash | undefined = undefined;
+    let transactionHash: any;
     try {
       const network = await walletClient.getChainId();
       // Get full transaction from public client
@@ -71,10 +92,10 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
         <TxnNotification message="Waiting for transaction to complete." blockExplorerLink={blockExplorerTxURL} />,
       );
 
-      const transactionReceipt = await publicClient.waitForTransactionReceipt({
-        hash: transactionHash,
-        confirmations: options?.blockConfirmations,
+      const transactionReceipt = await publicClient?.waitForTransactionReceipt({
+        hash: transactionHash
       });
+
       notification.remove(notificationId);
 
       notification.success(
@@ -83,8 +104,10 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
           icon: "🎉",
         },
       );
-
-      if (options?.onBlockConfirmation) options.onBlockConfirmation(transactionReceipt);
+      return {
+        receipt: transactionReceipt,
+        runId: decodeLogs(transactionReceipt?.logs, contract)[0].args.runId,
+      };
     } catch (error: any) {
       if (notificationId) {
         notification.remove(notificationId);
@@ -94,8 +117,6 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
       notification.error(message);
       throw error;
     }
-
-    return transactionHash;
   };
 
   return result;

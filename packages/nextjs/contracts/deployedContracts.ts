@@ -5,16 +5,21 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  31337: {
-    YourContract: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  696969: {
+    HateSpeechAgent: {
+      address: "0x44721928f71Fbfc4605A040A28b02cB3250e4af6",
       abi: [
         {
           inputs: [
             {
               internalType: "address",
-              name: "_owner",
+              name: "initialOracleAddress",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "systemPrompt",
+              type: "string",
             },
           ],
           stateMutability: "nonpayable",
@@ -26,60 +31,131 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
-              name: "greetingSetter",
+              name: "owner",
               type: "address",
             },
             {
-              indexed: false,
-              internalType: "string",
-              name: "newGreeting",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "bool",
-              name: "premium",
-              type: "bool",
-            },
-            {
-              indexed: false,
+              indexed: true,
               internalType: "uint256",
-              name: "value",
+              name: "runId",
               type: "uint256",
             },
           ],
-          name: "GreetingChange",
+          name: "AgentRunCreated",
           type: "event",
         },
         {
-          inputs: [],
-          name: "greeting",
-          outputs: [
+          anonymous: false,
+          inputs: [
             {
+              indexed: true,
               internalType: "string",
-              name: "",
+              name: "newKnowledgeBaseCID",
               type: "string",
             },
           ],
-          stateMutability: "view",
-          type: "function",
+          name: "KnowledgeBaseUpdated",
+          type: "event",
         },
         {
-          inputs: [],
-          name: "owner",
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOracleAddress",
+              type: "address",
+            },
+          ],
+          name: "OracleAddressUpdated",
+          type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "agentRuns",
           outputs: [
             {
               internalType: "address",
-              name: "",
+              name: "owner",
               type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "responsesCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint8",
+              name: "max_iterations",
+              type: "uint8",
+            },
+            {
+              internalType: "bool",
+              name: "is_finished",
+              type: "bool",
+            },
+            {
+              internalType: "uint256",
+              name: "messagesCount",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
           type: "function",
         },
         {
-          inputs: [],
-          name: "premium",
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "agentId",
+              type: "uint256",
+            },
+          ],
+          name: "getMessageHistoryContents",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "",
+              type: "string[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "agentId",
+              type: "uint256",
+            },
+          ],
+          name: "getMessageHistoryRoles",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "",
+              type: "string[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "runId",
+              type: "uint256",
+            },
+          ],
+          name: "isRunFinished",
           outputs: [
             {
               internalType: "bool",
@@ -91,63 +167,556 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
+          inputs: [],
+          name: "knowledgeBase",
+          outputs: [
             {
               internalType: "string",
-              name: "_newGreeting",
+              name: "",
               type: "string",
             },
           ],
-          name: "setGreeting",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "totalCounter",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
           stateMutability: "view",
           type: "function",
         },
         {
           inputs: [
             {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "userGreetingCounter",
-          outputs: [
-            {
               internalType: "uint256",
-              name: "",
+              name: "runId",
               type: "uint256",
             },
+            {
+              internalType: "string",
+              name: "response",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "errorMessage",
+              type: "string",
+            },
           ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "withdraw",
+          name: "onOracleFunctionResponse",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
         {
-          stateMutability: "payable",
-          type: "receive",
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "runId",
+              type: "uint256",
+            },
+            {
+              internalType: "string[]",
+              name: "documents",
+              type: "string[]",
+            },
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          name: "onOracleKnowledgeBaseQueryResponse",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "runId",
+              type: "uint256",
+            },
+            {
+              components: [
+                {
+                  internalType: "string",
+                  name: "id",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "content",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "functionName",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "functionArguments",
+                  type: "string",
+                },
+                {
+                  internalType: "uint64",
+                  name: "created",
+                  type: "uint64",
+                },
+                {
+                  internalType: "string",
+                  name: "model",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "systemFingerprint",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "object",
+                  type: "string",
+                },
+                {
+                  internalType: "uint32",
+                  name: "completionTokens",
+                  type: "uint32",
+                },
+                {
+                  internalType: "uint32",
+                  name: "promptTokens",
+                  type: "uint32",
+                },
+                {
+                  internalType: "uint32",
+                  name: "totalTokens",
+                  type: "uint32",
+                },
+              ],
+              internalType: "struct IOracle.OpenAiResponse",
+              name: "response",
+              type: "tuple",
+            },
+            {
+              internalType: "string",
+              name: "errorMessage",
+              type: "string",
+            },
+          ],
+          name: "onOracleOpenAiLlmResponse",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "oracleAddress",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "prompt",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "query",
+              type: "string",
+            },
+            {
+              internalType: "uint8",
+              name: "max_iterations",
+              type: "uint8",
+            },
+          ],
+          name: "runAgent",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "i",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "cid",
+              type: "string",
+            },
+          ],
+          name: "setKnowledgeBaseCid",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOracleAddress",
+              type: "address",
+            },
+          ],
+          name: "setOracleAddress",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
         },
       ],
-      inheritedFunctions: {},
+      transactionHash: "0x04d80705f6b2b00c0c13e63f0241973714e834b9a0bf15012d3329579b509035",
+      receipt: {
+        to: "0x0000000000000000000000000000000000000000",
+        from: "0x348e6e896ECcE0B74E985E31b3C5fB6c275E4A6d",
+        contractAddress: "0x44721928f71Fbfc4605A040A28b02cB3250e4af6",
+        transactionIndex: 0,
+        gasUsed: "2344857",
+        logsBloom:
+          "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        blockHash: "0xf2ca1fb779bafb3c9180457843f22345f608790a54fe770fc8b51ecedfc4ee49",
+        transactionHash: "0x04d80705f6b2b00c0c13e63f0241973714e834b9a0bf15012d3329579b509035",
+        logs: [],
+        blockNumber: 26122159,
+        cumulativeGasUsed: "0",
+        status: 1,
+        byzantium: true,
+      },
+      args: ["0x68EC9556830AD097D661Df2557FBCeC166a0A075", "You are a helpful assistant"],
+      numDeployments: 2,
+      solcInputHash: "3c2dde9205e85b13f3b132b6122236e1",
+      metadata:
+        '{"compiler":{"version":"0.8.24+commit.e11b9ed9"},"language":"Solidity","output":{"abi":[{"inputs":[{"internalType":"address","name":"initialOracleAddress","type":"address"},{"internalType":"string","name":"systemPrompt","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"uint256","name":"runId","type":"uint256"}],"name":"AgentRunCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"string","name":"newKnowledgeBaseCID","type":"string"}],"name":"KnowledgeBaseUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newOracleAddress","type":"address"}],"name":"OracleAddressUpdated","type":"event"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"agentRuns","outputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"responsesCount","type":"uint256"},{"internalType":"uint8","name":"max_iterations","type":"uint8"},{"internalType":"bool","name":"is_finished","type":"bool"},{"internalType":"uint256","name":"messagesCount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"agentId","type":"uint256"}],"name":"getMessageHistoryContents","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"agentId","type":"uint256"}],"name":"getMessageHistoryRoles","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"runId","type":"uint256"}],"name":"isRunFinished","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"knowledgeBase","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"runId","type":"uint256"},{"internalType":"string","name":"response","type":"string"},{"internalType":"string","name":"errorMessage","type":"string"}],"name":"onOracleFunctionResponse","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"runId","type":"uint256"},{"internalType":"string[]","name":"documents","type":"string[]"},{"internalType":"string","name":"","type":"string"}],"name":"onOracleKnowledgeBaseQueryResponse","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"runId","type":"uint256"},{"components":[{"internalType":"string","name":"id","type":"string"},{"internalType":"string","name":"content","type":"string"},{"internalType":"string","name":"functionName","type":"string"},{"internalType":"string","name":"functionArguments","type":"string"},{"internalType":"uint64","name":"created","type":"uint64"},{"internalType":"string","name":"model","type":"string"},{"internalType":"string","name":"systemFingerprint","type":"string"},{"internalType":"string","name":"object","type":"string"},{"internalType":"uint32","name":"completionTokens","type":"uint32"},{"internalType":"uint32","name":"promptTokens","type":"uint32"},{"internalType":"uint32","name":"totalTokens","type":"uint32"}],"internalType":"struct IOracle.OpenAiResponse","name":"response","type":"tuple"},{"internalType":"string","name":"errorMessage","type":"string"}],"name":"onOracleOpenAiLlmResponse","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"oracleAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"prompt","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"query","type":"string"},{"internalType":"uint8","name":"max_iterations","type":"uint8"}],"name":"runAgent","outputs":[{"internalType":"uint256","name":"i","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"cid","type":"string"}],"name":"setKnowledgeBaseCid","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOracleAddress","type":"address"}],"name":"setOracleAddress","outputs":[],"stateMutability":"nonpayable","type":"function"}],"devdoc":{"kind":"dev","methods":{},"version":1},"userdoc":{"kind":"user","methods":{},"version":1}},"settings":{"compilationTarget":{"contracts/HateSpeechAgent.sol":"HateSpeechAgent"},"evmVersion":"paris","libraries":{},"metadata":{"bytecodeHash":"ipfs","useLiteralContent":true},"optimizer":{"enabled":true,"runs":200},"remappings":[]},"sources":{"contracts/HateSpeechAgent.sol":{"content":"// SPDX-License-Identifier: UNLICENSED\\npragma solidity ^0.8.9;\\n// Uncomment this line to use console.log\\n// import \\"hardhat/console.sol\\";\\nimport \\"./interfaces/IOracle.sol\\";\\n\\ncontract HateSpeechAgent {\\n    string public prompt;\\n    string public knowledgeBase;\\n\\n    struct Message {\\n        string role;\\n        string content;\\n    }\\n\\n    struct AgentRun {\\n        address owner;\\n        Message[] messages;\\n        uint256 responsesCount;\\n        uint8 max_iterations;\\n        bool is_finished;\\n        uint256 messagesCount;\\n    }\\n\\n    mapping(uint256 => AgentRun) public agentRuns;\\n    uint256 private agentRunCount;\\n\\n    event AgentRunCreated(address indexed owner, uint256 indexed runId);\\n    event KnowledgeBaseUpdated(string indexed newKnowledgeBaseCID);\\n\\n    address private owner;\\n    address public oracleAddress;\\n\\n    event OracleAddressUpdated(address indexed newOracleAddress);\\n\\n    IOracle.OpenAiRequest private config;\\n\\n    constructor(address initialOracleAddress, string memory systemPrompt) {\\n        owner = msg.sender;\\n        oracleAddress = initialOracleAddress;\\n        prompt = systemPrompt;\\n\\n        config = IOracle.OpenAiRequest({\\n            model: \\"gpt-4-turbo-preview\\",\\n            frequencyPenalty: 21, \\n            logitBias: \\"\\", \\n            maxTokens: 1000, \\n            presencePenalty: 21,\\n            responseFormat: \'{\\"type\\":\\"text\\"}\',\\n            seed: 0,\\n            stop: \\"\\", \\n            temperature: 10, \\n            topP: 101, \\n            tools: \'[{\\"type\\":\\"function\\",\\"function\\":{\\"name\\":\\"web_search\\",\\"description\\":\\"Search the internet\\",\\"parameters\\":{\\"type\\":\\"object\\",\\"properties\\":{\\"query\\":{\\"type\\":\\"string\\",\\"description\\":\\"Search query\\"}},\\"required\\":[\\"query\\"]}}},{\\"type\\":\\"function\\",\\"function\\":{\\"name\\":\\"image_generation\\",\\"description\\":\\"Generates an image using Dalle-2\\",\\"parameters\\":{\\"type\\":\\"object\\",\\"properties\\":{\\"prompt\\":{\\"type\\":\\"string\\",\\"description\\":\\"Dalle-2 prompt to generate an image\\"}},\\"required\\":[\\"prompt\\"]}}}]\',\\n            toolChoice: \\"auto\\", \\n            user: \\"\\" \\n        });\\n    }\\n\\n    modifier onlyOwner() {\\n        require(msg.sender == owner, \\"Caller is not owner\\");\\n        _;\\n    }\\n\\n    modifier onlyOracle() {\\n        require(msg.sender == oracleAddress, \\"Caller is not oracle\\");\\n        _;\\n    }\\n\\n    function setOracleAddress(address newOracleAddress) public onlyOwner {\\n        require(msg.sender == owner, \\"Caller is not the owner\\");\\n        oracleAddress = newOracleAddress;\\n        emit OracleAddressUpdated(newOracleAddress);\\n    }\\n\\n    function setKnowledgeBaseCid(string memory cid) public onlyOwner {\\n        require(bytes(cid).length > 0, \\"CID cannot be empty\\");\\n        knowledgeBase = cid;\\n        emit KnowledgeBaseUpdated(cid);\\n    }\\n\\n    function runAgent(\\n        string memory query,\\n        uint8 max_iterations\\n    ) public returns (uint256 i) {\\n        AgentRun storage run = agentRuns[agentRunCount];\\n\\n        run.owner = msg.sender;\\n        run.is_finished = false;\\n        run.responsesCount = 0;\\n        run.max_iterations = max_iterations;\\n\\n        Message memory systemMessage;\\n        systemMessage.content = prompt;\\n        systemMessage.role = \\"system\\";\\n        run.messages.push(systemMessage);\\n        run.messagesCount++;\\n\\n        Message memory newMessage;\\n        newMessage.content = query;\\n        newMessage.role = \\"user\\";\\n        run.messages.push(newMessage);\\n        run.messagesCount++;\\n\\n        uint256 currentId = agentRunCount;\\n        agentRunCount = agentRunCount + 1;\\n\\n        if (bytes(knowledgeBase).length > 0) {\\n            IOracle(oracleAddress).createKnowledgeBaseQuery(\\n                currentId,\\n                knowledgeBase,\\n                query,\\n                2\\n            );\\n            emit AgentRunCreated(run.owner, currentId);\\n        } else {\\n            IOracle(oracleAddress).createOpenAiLlmCall(currentId, config);\\n            emit AgentRunCreated(run.owner, currentId);\\n        }\\n\\n        return currentId;\\n    }\\n\\n    function onOracleOpenAiLlmResponse(\\n        uint256 runId,\\n        IOracle.OpenAiResponse memory response,\\n        string memory errorMessage\\n    ) public onlyOracle {\\n        AgentRun storage run = agentRuns[runId];\\n\\n        if (!compareStrings(errorMessage, \\"\\")) {\\n            Message memory newMessage;\\n            newMessage.role = \\"assistant\\";\\n            newMessage.content = errorMessage;\\n            run.messages.push(newMessage);\\n            run.responsesCount++;\\n            run.is_finished = true;\\n            return;\\n        }\\n\\n        if (run.responsesCount >= run.max_iterations) {\\n            run.is_finished = true;\\n            return;\\n        }\\n\\n        if (!compareStrings(response.content, \\"\\")) {\\n            Message memory assistantMessage;\\n            assistantMessage.content = response.content;\\n            assistantMessage.role = \\"assistant\\";\\n            run.messages.push(assistantMessage);\\n            run.responsesCount++;\\n            run.is_finished = true;\\n        }\\n\\n        if (!compareStrings(response.functionName, \\"\\")) {\\n            IOracle(oracleAddress).createFunctionCall(\\n                runId,\\n                response.functionName,\\n                response.functionArguments\\n            );\\n            return;\\n        }\\n\\n        run.is_finished = true;\\n    }\\n\\n    function onOracleKnowledgeBaseQueryResponse(\\n        uint256 runId,\\n        string[] memory documents,\\n        string memory /*errorMessage*/\\n    ) public onlyOracle {\\n        AgentRun storage run = agentRuns[runId];\\n        // Retrieve the last user message\\n        require(\\n            keccak256(\\n                abi.encodePacked(run.messages[run.messagesCount - 1].role)\\n            ) == keccak256(abi.encodePacked(\\"user\\")),\\n            \\"No message to add context to\\"\\n        );\\n        Message storage lastMessage = run.messages[run.messagesCount - 1];\\n        // Start with the original message content\\n        string memory newContent = lastMessage.content;\\n\\n        // Append \\"Relevant context:\\\\n\\" only if there are documents\\n        if (documents.length > 0) {\\n            newContent = string(\\n                abi.encodePacked(newContent, \\"\\\\n\\\\nRelevant context:\\\\n\\")\\n            );\\n        }\\n\\n        // Iterate through the documents and append each to the newContent\\n        for (uint256 i = 0; i < documents.length; i++) {\\n            newContent = string(\\n                abi.encodePacked(newContent, documents[i], \\"\\\\n\\")\\n            );\\n        }\\n\\n        // Finally, set the lastMessage content to the newly constructed string\\n        lastMessage.content = newContent;\\n\\n        // Call LLM\\n        IOracle(oracleAddress).createOpenAiLlmCall(runId, config);\\n        emit AgentRunCreated(run.owner, runId);\\n    }\\n\\n    function onOracleFunctionResponse(\\n        uint256 runId,\\n        string memory response,\\n        string memory errorMessage\\n    ) public onlyOracle {\\n        AgentRun storage run = agentRuns[runId];\\n        require(!run.is_finished, \\"Run is finished\\");\\n        string memory result = response;\\n        if (!compareStrings(errorMessage, \\"\\")) {\\n            result = errorMessage;\\n        }\\n        Message memory newMessage;\\n        newMessage.role = \\"user\\";\\n        newMessage.content = result;\\n        run.messages.push(newMessage);\\n        run.responsesCount++;\\n        IOracle(oracleAddress).createOpenAiLlmCall(runId, config);\\n    }\\n\\n    function getMessageHistoryContents(\\n        uint256 agentId\\n    ) public view returns (string[] memory) {\\n        string[] memory messages = new string[](\\n            agentRuns[agentId].messages.length\\n        );\\n        for (uint256 i = 0; i < agentRuns[agentId].messages.length; i++) {\\n            messages[i] = agentRuns[agentId].messages[i].content;\\n        }\\n        return messages;\\n    }\\n\\n    function getMessageHistoryRoles(\\n        uint256 agentId\\n    ) public view returns (string[] memory) {\\n        string[] memory roles = new string[](\\n            agentRuns[agentId].messages.length\\n        );\\n        for (uint256 i = 0; i < agentRuns[agentId].messages.length; i++) {\\n            roles[i] = agentRuns[agentId].messages[i].role;\\n        }\\n        return roles;\\n    }\\n\\n    function isRunFinished(uint256 runId) public view returns (bool) {\\n        return agentRuns[runId].is_finished;\\n    }\\n\\n    function compareStrings(\\n        string memory a,\\n        string memory b\\n    ) private pure returns (bool) {\\n        return (keccak256(abi.encodePacked((a))) ==\\n            keccak256(abi.encodePacked((b))));\\n    }\\n}\\n","keccak256":"0xb3692bf3707b609f76cfa26aa3fc1d8a138113b27d20d35c1ff6f96bf4b8019c","license":"UNLICENSED"},"contracts/interfaces/IOracle.sol":{"content":"// SPDX-License-Identifier: UNLICENSED\\npragma solidity ^0.8.13;\\n\\ninterface IOracle {\\n\\n    struct Content {\\n        string contentType;\\n        string value;\\n    }\\n\\n    struct Message {\\n        string role;\\n        Content [] content;\\n    }\\n\\n    struct OpenAiRequest {\\n        // \\"gpt-4-turbo\\", \\"gpt-4-turbo-preview\\" or \\"gpt-3.5-turbo-1106\\"\\n        string model;\\n        // int -20 - 20, Mapped to float -2.0 - 2.0. If bigger than 20 then null\\n        int8 frequencyPenalty;\\n        // JSON string or empty string\\n        string logitBias;\\n        // 0 for null\\n        uint32 maxTokens;\\n        // int -20 - 20, Mapped to float -2.0 - 2.0. If bigger than 20 then null\\n        int8 presencePenalty;\\n        // JSON string or empty string\\n        string responseFormat;\\n        // 0 for null\\n        uint seed;\\n        // empty str for null\\n        string stop;\\n        // 0-20, > 20 for null\\n        uint temperature;\\n        // 0-100  percentage, > 100 for null\\n        uint topP;\\n        // JSON list for tools in OpenAI format, empty for null, names have to match the supported tools\\n        string tools;\\n        // \\"none\\", \\"auto\\" or empty str which defaults to auto on OpenAI side\\n        string toolChoice;\\n        string user;\\n    }\\n\\n    struct OpenAiResponse {\\n        string id;\\n\\n        // either content is an empty str or functionName and functionArguments\\n        string content;\\n        string functionName;\\n        string functionArguments;\\n\\n        uint64 created;\\n        string model;\\n        string systemFingerprint;\\n        // kind of pointless since its always \\"chat.completion\\"?\\n        string object;\\n\\n        uint32 completionTokens;\\n        uint32 promptTokens;\\n        uint32 totalTokens;\\n    }\\n\\n    struct GroqRequest {\\n        // \\"llama3-8b-8192\\", \\"llama3-70b-8192\\", \\"mixtral-8x7b-32768\\" or \\"gemma-7b-it\\"\\n        string model;\\n        // int -20 - 20, Mapped to float -2.0 - 2.0. If bigger than 20 then null\\n        int8 frequencyPenalty;\\n        // JSON string or empty string\\n        string logitBias;\\n        // 0 for null\\n        uint32 maxTokens;\\n        // int -20 - 20, Mapped to float -2.0 - 2.0. If bigger than 20 then null\\n        int8 presencePenalty;\\n        // JSON string or empty string\\n        string responseFormat;\\n        // 0 for null\\n        uint seed;\\n        // empty str for null\\n        string stop;\\n        // 0-20, > 20 for null\\n        uint temperature;\\n        // 0-100  percentage, > 100 for null\\n        uint topP;\\n        string user;\\n    }\\n\\n    struct GroqResponse {\\n        string id;\\n\\n        string content;\\n\\n        uint64 created;\\n        string model;\\n        string systemFingerprint;\\n        // kind of pointless since its always \\"chat.completion\\"?\\n        string object;\\n\\n        uint32 completionTokens;\\n        uint32 promptTokens;\\n        uint32 totalTokens;\\n    }\\n\\n    struct KnowledgeBaseQueryRequest {\\n        string cid;\\n        string query;\\n        uint32 num_documents;\\n    }\\n\\n    function createLlmCall(\\n        uint promptId\\n    ) external returns (uint);\\n\\n    function createGroqLlmCall(\\n        uint promptId,\\n        GroqRequest memory request\\n    ) external returns (uint);\\n\\n    function createOpenAiLlmCall(\\n        uint promptId,\\n        OpenAiRequest memory request\\n    ) external returns (uint);\\n\\n    function createFunctionCall(\\n        uint functionCallbackId,\\n        string memory functionType,\\n        string memory functionInput\\n    ) external returns (uint i);\\n\\n    function createKnowledgeBaseQuery(\\n        uint kbQueryCallbackId,\\n        string memory cid,\\n        string memory query,\\n        uint32 num_documents\\n    ) external returns (uint i);\\n}","keccak256":"0x531e2eb5335763f17770077c695b4a3791e91f5891a588778b677ca8d4217fc7","license":"UNLICENSED"}},"version":1}',
+      bytecode:
+        "0x60806040523480156200001157600080fd5b5060405162002542380380620025428339810160408190526200003491620002c5565b60048054336001600160a01b031991821617909155600580549091166001600160a01b03841617905560006200006b82826200044c565b50604051806101a001604052806040518060400160405280601381526020017f6770742d342d747572626f2d70726576696577000000000000000000000000008152508152602001601560000b81526020016040518060200160405280600081525081526020016103e863ffffffff168152602001601560000b81526020016040518060400160405280600f81526020016e7b2274797065223a2274657874227d60881b815250815260200160008152602001604051806020016040528060008152508152602001600a8152602001606581526020016040518061020001604052806101d381526020016200236f6101d39139815260408051808201825260048152636175746f60e01b60208281019190915280840191909152815190810182526000815291015280516006908190620001a690826200044c565b50602082015160018201805460ff191660ff90921691909117905560408201516002820190620001d790826200044c565b506060820151600382018054608085015160ff166401000000000264ffffffffff1990911663ffffffff9093169290921791909117905560a082015160048201906200022490826200044c565b5060c0820151600582015560e082015160068201906200024590826200044c565b506101008201516007820155610120820151600882015561014082015160098201906200027390826200044c565b50610160820151600a8201906200028b90826200044c565b50610180820151600b820190620002a390826200044c565b50905050505062000518565b634e487b7160e01b600052604160045260246000fd5b60008060408385031215620002d957600080fd5b82516001600160a01b0381168114620002f157600080fd5b602084810151919350906001600160401b03808211156200031157600080fd5b818601915086601f8301126200032657600080fd5b8151818111156200033b576200033b620002af565b604051601f8201601f19908116603f01168101908382118183101715620003665762000366620002af565b8160405282815289868487010111156200037f57600080fd5b600093505b82841015620003a3578484018601518185018701529285019262000384565b60008684830101528096505050505050509250929050565b600181811c90821680620003d057607f821691505b602082108103620003f157634e487b7160e01b600052602260045260246000fd5b50919050565b601f82111562000447576000816000526020600020601f850160051c81016020861015620004225750805b601f850160051c820191505b8181101562000443578281556001016200042e565b5050505b505050565b81516001600160401b03811115620004685762000468620002af565b6200048081620004798454620003bb565b84620003f7565b602080601f831160018114620004b857600084156200049f5750858301515b600019600386901b1c1916600185901b17855562000443565b600085815260208120601f198616915b82811015620004e957888601518255948401946001909101908401620004c8565b5085821015620005085787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b611e4780620005286000396000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c8063a89ae4ba1161008c578063daec051f11610066578063daec051f1461023e578063eb17429a1461025f578063ed6e39e51461027f578063f997cc251461029257600080fd5b8063a89ae4ba14610177578063c63b0295146101a2578063ccac7a911461022b57600080fd5b80632843d135146100d45780632eab9c81146100e95780634c69c00f146101295780634cecd88e1461013c5780637397454d1461014f5780637c65d71114610162575b600080fd5b6100e76100e236600461143c565b61029a565b005b6101146100f736600461152d565b600090815260026020526040902060030154610100900460ff1690565b60405190151581526020015b60405180910390f35b6100e7610137366004611546565b6105c2565b6100e761014a3660046115a7565b6106b6565b6100e761015d366004611758565b61096e565b61016a610b29565b60405161012091906117fe565b60055461018a906001600160a01b031681565b6040516001600160a01b039091168152602001610120565b6101f16101b036600461152d565b600260208190526000918252604090912080549181015460038201546004909201546001600160a01b0390931692909160ff80821692610100909204169085565b604080516001600160a01b039096168652602086019490945260ff909216928401929092529015156060830152608082015260a001610120565b6100e7610239366004611811565b610bb7565b61025161024c36600461184e565b610c9c565b604051908152602001610120565b61027261026d36600461152d565b61102a565b60405161012091906118a6565b61027261028d36600461152d565b611193565b61016a6112f5565b6005546001600160a01b031633146102cd5760405162461bcd60e51b81526004016102c49061190a565b60405180910390fd5b60008381526002602090815260409182902091516102f69101633ab9b2b960e11b815260040190565b604051602081830303815290604052805190602001208160010160018360040154610321919061194e565b8154811061033157610331611961565b906000526020600020906002020160000160405160200161035291906119b1565b60405160208183030381529060405280519060200120146103b55760405162461bcd60e51b815260206004820152601c60248201527f4e6f206d65737361676520746f2061646420636f6e7465787420746f0000000060448201526064016102c4565b600081600101600183600401546103cc919061194e565b815481106103dc576103dc611961565b9060005260206000209060020201905060008160010180546103fd90611977565b80601f016020809104026020016040519081016040528092919081815260200182805461042990611977565b80156104765780601f1061044b57610100808354040283529160200191610476565b820191906000526020600020905b81548152906001019060200180831161045957829003601f168201915b505050505090506000855111156104aa57806040516020016104989190611a27565b60405160208183030381529060405290505b60005b85518110156104fc57818682815181106104c9576104c9611961565b60200260200101516040516020016104e2929190611a5f565b60408051601f1981840301815291905291506001016104ad565b506001820161050b8282611aea565b50600554604051633c38a5f560e01b81526001600160a01b0390911690633c38a5f59061053f908990600690600401611c27565b6020604051808303816000875af115801561055e573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105829190611d38565b50825460405187916001600160a01b0316907f9697c88a6be3b3ed5062f2dcbd719a10914832320686f14e24f7756210a6685e90600090a3505050505050565b6004546001600160a01b031633146106125760405162461bcd60e51b815260206004820152601360248201527221b0b63632b91034b9903737ba1037bbb732b960691b60448201526064016102c4565b6004546001600160a01b0316331461066c5760405162461bcd60e51b815260206004820152601760248201527f43616c6c6572206973206e6f7420746865206f776e657200000000000000000060448201526064016102c4565b600580546001600160a01b0319166001600160a01b0383169081179091556040517f107a9fafffb7ac890f780879e423760c9ffea8dcee8045681f40f542aede2cb890600090a250565b6005546001600160a01b031633146106e05760405162461bcd60e51b81526004016102c49061190a565b60008381526002602090815260408083208151928301909152918152610707908390611302565b6107b9576040805180820182526060808252602080830191825283518085019094526009845268185cdcda5cdd185b9d60ba1b8482015292825284905260018381018054918201815560009081529290922081519192839260029091029091019081906107749082611aea565b50602082015160018201906107899082611aea565b50505060028201805490600061079e83611d51565b909155505050600301805461ff001916610100179055505050565b6003810154600282015460ff909116116107e257600301805461ff001916610100179055505050565b6107ff836020015160405180602001604052806000815250611302565b6108b057604080518082019091526060808252602082015260208085015182820152604080518082019091526009815268185cdcda5cdd185b9d60ba1b8183015282526001808401805491820181556000908152919091208251839260020290910190819061086e9082611aea565b50602082015160018201906108839082611aea565b50505060028201805490600061089883611d51565b90915550505060038101805461ff0019166101001790555b6108cd836040015160405180602001604052806000815250611302565b6109585760055460408085015160608601519151634b04236b60e01b81526001600160a01b0390931692634b04236b9261090e928992909190600401611d6a565b6020604051808303816000875af115801561092d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109519190611d38565b5050505050565b600301805461ff0019166101001790555b505050565b6005546001600160a01b031633146109985760405162461bcd60e51b81526004016102c49061190a565b60008381526002602052604090206003810154610100900460ff16156109f25760405162461bcd60e51b815260206004820152600f60248201526e149d5b881a5cc8199a5b9a5cda1959608a1b60448201526064016102c4565b6000839050610a108360405180602001604052806000815250611302565b610a175750815b60408051808201825260608082526020808301918252835180850190945260048452633ab9b2b960e11b848201529282528390526001848101805491820181556000908152929092208151919283926002909102909101908190610a7b9082611aea565b5060208201516001820190610a909082611aea565b505050600283018054906000610aa583611d51565b9091555050600554604051633c38a5f560e01b81526001600160a01b0390911690633c38a5f590610add908990600690600401611c27565b6020604051808303816000875af1158015610afc573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610b209190611d38565b50505050505050565b60008054610b3690611977565b80601f0160208091040260200160405190810160405280929190818152602001828054610b6290611977565b8015610baf5780601f10610b8457610100808354040283529160200191610baf565b820191906000526020600020905b815481529060010190602001808311610b9257829003601f168201915b505050505081565b6004546001600160a01b03163314610c075760405162461bcd60e51b815260206004820152601360248201527221b0b63632b91034b9903737ba1037bbb732b960691b60448201526064016102c4565b6000815111610c4e5760405162461bcd60e51b81526020600482015260136024820152724349442063616e6e6f7420626520656d70747960681b60448201526064016102c4565b6001610c5a8282611aea565b5080604051610c699190611d9f565b604051908190038120907f25f99356a5ff3d29e95df0906ba17b40b7bb5c86a372ca12d27fcf3ce537f1ab90600090a250565b6003805460009081526002602081815260408084208054336001600160a01b0319909116178155948501805493860185905561ffff1990931660ff871617909255815180830190925260608083529082015290919060008054610cfe90611977565b80601f0160208091040260200160405190810160405280929190818152602001828054610d2a90611977565b8015610d775780601f10610d4c57610100808354040283529160200191610d77565b820191906000526020600020905b815481529060010190602001808311610d5a57829003601f168201915b505050506020808401929092525060408051808201909152600681526573797374656d60d01b81830152825260018084018054918201815560009081529190912082518392600202909101908190610dcf9082611aea565b5060208201516001820190610de49082611aea565b505050600482018054906000610df983611d51565b9091555050604080518082018252606081526020808201889052825180840190935260048352633ab9b2b960e11b838201529181526001848101805491820181556000908152929092208151919283926002909102909101908190610e5e9082611aea565b5060208201516001820190610e739082611aea565b505050600483018054906000610e8883611d51565b9091555050600354610e9b816001611dbb565b6003556001805460009190610eaf90611977565b90501115610f6f5760055460405163a252a95160e01b81526001600160a01b039091169063a252a95190610eef9084906001908c90600290600401611dce565b6020604051808303816000875af1158015610f0e573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610f329190611d38565b50835460405182916001600160a01b0316907f9697c88a6be3b3ed5062f2dcbd719a10914832320686f14e24f7756210a6685e90600090a361101e565b600554604051633c38a5f560e01b81526001600160a01b0390911690633c38a5f590610fa2908490600690600401611c27565b6020604051808303816000875af1158015610fc1573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610fe59190611d38565b50835460405182916001600160a01b0316907f9697c88a6be3b3ed5062f2dcbd719a10914832320686f14e24f7756210a6685e90600090a35b93505050505b92915050565b6000818152600260205260408120600101546060919067ffffffffffffffff8111156110585761105861135b565b60405190808252806020026020018201604052801561108b57816020015b60608152602001906001900390816110765790505b50905060005b60008481526002602052604090206001015481101561118c5760008481526002602052604090206001018054829081106110cd576110cd611961565b906000526020600020906002020160010180546110e990611977565b80601f016020809104026020016040519081016040528092919081815260200182805461111590611977565b80156111625780601f1061113757610100808354040283529160200191611162565b820191906000526020600020905b81548152906001019060200180831161114557829003601f168201915b505050505082828151811061117957611179611961565b6020908102919091010152600101611091565b5092915050565b6000818152600260205260408120600101546060919067ffffffffffffffff8111156111c1576111c161135b565b6040519080825280602002602001820160405280156111f457816020015b60608152602001906001900390816111df5790505b50905060005b60008481526002602052604090206001015481101561118c57600084815260026020526040902060010180548290811061123657611236611961565b9060005260206000209060020201600001805461125290611977565b80601f016020809104026020016040519081016040528092919081815260200182805461127e90611977565b80156112cb5780601f106112a0576101008083540402835291602001916112cb565b820191906000526020600020905b8154815290600101906020018083116112ae57829003601f168201915b50505050508282815181106112e2576112e2611961565b60209081029190910101526001016111fa565b60018054610b3690611977565b6000816040516020016113159190611d9f565b604051602081830303815290604052805190602001208360405160200161133c9190611d9f565b6040516020818303038152906040528051906020012014905092915050565b634e487b7160e01b600052604160045260246000fd5b604051610160810167ffffffffffffffff811182821017156113955761139561135b565b60405290565b604051601f8201601f1916810167ffffffffffffffff811182821017156113c4576113c461135b565b604052919050565b600082601f8301126113dd57600080fd5b813567ffffffffffffffff8111156113f7576113f761135b565b61140a601f8201601f191660200161139b565b81815284602083860101111561141f57600080fd5b816020850160208301376000918101602001919091529392505050565b60008060006060848603121561145157600080fd5b8335925060208085013567ffffffffffffffff8082111561147157600080fd5b818701915087601f83011261148557600080fd5b8135818111156114975761149761135b565b8060051b6114a685820161139b565b918252838101850191858101908b8411156114c057600080fd5b86860192505b838310156114fc578235858111156114de5760008081fd5b6114ec8d89838a01016113cc565b83525091860191908601906114c6565b9750505050604087013592508083111561151557600080fd5b5050611523868287016113cc565b9150509250925092565b60006020828403121561153f57600080fd5b5035919050565b60006020828403121561155857600080fd5b81356001600160a01b038116811461156f57600080fd5b9392505050565b803567ffffffffffffffff8116811461158e57600080fd5b919050565b803563ffffffff8116811461158e57600080fd5b6000806000606084860312156115bc57600080fd5b83359250602084013567ffffffffffffffff808211156115db57600080fd5b9085019061016082880312156115f057600080fd5b6115f8611371565b82358281111561160757600080fd5b611613898286016113cc565b82525060208301358281111561162857600080fd5b611634898286016113cc565b60208301525060408301358281111561164c57600080fd5b611658898286016113cc565b60408301525060608301358281111561167057600080fd5b61167c898286016113cc565b60608301525061168e60808401611576565b608082015260a0830135828111156116a557600080fd5b6116b1898286016113cc565b60a08301525060c0830135828111156116c957600080fd5b6116d5898286016113cc565b60c08301525060e0830135828111156116ed57600080fd5b6116f9898286016113cc565b60e08301525061010061170d818501611593565b9082015261012061171f848201611593565b90820152610140611731848201611593565b908201529350604086013591508082111561174b57600080fd5b50611523868287016113cc565b60008060006060848603121561176d57600080fd5b83359250602084013567ffffffffffffffff8082111561178c57600080fd5b611798878388016113cc565b9350604086013591508082111561174b57600080fd5b60005b838110156117c95781810151838201526020016117b1565b50506000910152565b600081518084526117ea8160208601602086016117ae565b601f01601f19169290920160200192915050565b60208152600061156f60208301846117d2565b60006020828403121561182357600080fd5b813567ffffffffffffffff81111561183a57600080fd5b611846848285016113cc565b949350505050565b6000806040838503121561186157600080fd5b823567ffffffffffffffff81111561187857600080fd5b611884858286016113cc565b925050602083013560ff8116811461189b57600080fd5b809150509250929050565b600060208083016020845280855180835260408601915060408160051b87010192506020870160005b828110156118fd57603f198886030184526118eb8583516117d2565b945092850192908501906001016118cf565b5092979650505050505050565b60208082526014908201527343616c6c6572206973206e6f74206f7261636c6560601b604082015260600190565b634e487b7160e01b600052601160045260246000fd5b8181038181111561102457611024611938565b634e487b7160e01b600052603260045260246000fd5b600181811c9082168061198b57607f821691505b6020821081036119ab57634e487b7160e01b600052602260045260246000fd5b50919050565b60008083546119bf81611977565b600182811680156119d757600181146119ec57611a1b565b60ff1984168752821515830287019450611a1b565b8760005260208060002060005b85811015611a125781548a8201529084019082016119f9565b50505082870194505b50929695505050505050565b60008251611a398184602087016117ae565b7305052932b632bb30b73a1031b7b73a32bc3a1d0560611b920191825250601401919050565b60008351611a718184602088016117ae565b835190830190611a858183602088016117ae565b600560f91b9101908152600101949350505050565b601f821115610969576000816000526020600020601f850160051c81016020861015611ac35750805b601f850160051c820191505b81811015611ae257828155600101611acf565b505050505050565b815167ffffffffffffffff811115611b0457611b0461135b565b611b1881611b128454611977565b84611a9a565b602080601f831160018114611b4d5760008415611b355750858301515b600019600386901b1c1916600185901b178555611ae2565b600085815260208120601f198616915b82811015611b7c57888601518255948401946001909101908401611b5d565b5085821015611b9a5787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b60008154611bb781611977565b808552602060018381168015611bd45760018114611bee57611c1c565b60ff1985168884015283151560051b880183019550611c1c565b866000528260002060005b85811015611c145781548a8201860152908301908401611bf9565b890184019650505b505050505092915050565b8281526040602082015260006101a0806040840152611c4a6101e0840185611baa565b600185015460000b6060850152603f1984820381016080860152611c718260028801611baa565b600387015463ffffffff811660a088015260201c60000b60c0870152858103820160e08701529150611ca68260048801611baa565b915060058601546101008601528085830301610120860152611ccb8260068801611baa565b9150600786015461014086015260088601546101608601528085830301610180860152611cfb8260098801611baa565b9150808583030183860152611d1382600a8801611baa565b925080858403016101c08601525050611d2f81600b8601611baa565b95945050505050565b600060208284031215611d4a57600080fd5b5051919050565b600060018201611d6357611d63611938565b5060010190565b838152606060208201526000611d8360608301856117d2565b8281036040840152611d9581856117d2565b9695505050505050565b60008251611db18184602087016117ae565b9190910192915050565b8082018082111561102457611024611938565b848152608060208201526000611de76080830186611baa565b8281036040840152611df981866117d2565b91505063ffffffff831660608301529594505050505056fea2646970667358221220b82ec165b805ca08c2855514d892512e180abdac9c34f38f19430131f85b4ba564736f6c634300081800335b7b2274797065223a2266756e6374696f6e222c2266756e6374696f6e223a7b226e616d65223a227765625f736561726368222c226465736372697074696f6e223a225365617263682074686520696e7465726e6574222c22706172616d6574657273223a7b2274797065223a226f626a656374222c2270726f70657274696573223a7b227175657279223a7b2274797065223a22737472696e67222c226465736372697074696f6e223a22536561726368207175657279227d7d2c227265717569726564223a5b227175657279225d7d7d7d2c7b2274797065223a2266756e6374696f6e222c2266756e6374696f6e223a7b226e616d65223a22696d6167655f67656e65726174696f6e222c226465736372697074696f6e223a2247656e65726174657320616e20696d616765207573696e672044616c6c652d32222c22706172616d6574657273223a7b2274797065223a226f626a656374222c2270726f70657274696573223a7b2270726f6d7074223a7b2274797065223a22737472696e67222c226465736372697074696f6e223a2244616c6c652d322070726f6d707420746f2067656e657261746520616e20696d616765227d7d2c227265717569726564223a5b2270726f6d7074225d7d7d7d5d",
+      deployedBytecode:
+        "0x608060405234801561001057600080fd5b50600436106100cf5760003560e01c8063a89ae4ba1161008c578063daec051f11610066578063daec051f1461023e578063eb17429a1461025f578063ed6e39e51461027f578063f997cc251461029257600080fd5b8063a89ae4ba14610177578063c63b0295146101a2578063ccac7a911461022b57600080fd5b80632843d135146100d45780632eab9c81146100e95780634c69c00f146101295780634cecd88e1461013c5780637397454d1461014f5780637c65d71114610162575b600080fd5b6100e76100e236600461143c565b61029a565b005b6101146100f736600461152d565b600090815260026020526040902060030154610100900460ff1690565b60405190151581526020015b60405180910390f35b6100e7610137366004611546565b6105c2565b6100e761014a3660046115a7565b6106b6565b6100e761015d366004611758565b61096e565b61016a610b29565b60405161012091906117fe565b60055461018a906001600160a01b031681565b6040516001600160a01b039091168152602001610120565b6101f16101b036600461152d565b600260208190526000918252604090912080549181015460038201546004909201546001600160a01b0390931692909160ff80821692610100909204169085565b604080516001600160a01b039096168652602086019490945260ff909216928401929092529015156060830152608082015260a001610120565b6100e7610239366004611811565b610bb7565b61025161024c36600461184e565b610c9c565b604051908152602001610120565b61027261026d36600461152d565b61102a565b60405161012091906118a6565b61027261028d36600461152d565b611193565b61016a6112f5565b6005546001600160a01b031633146102cd5760405162461bcd60e51b81526004016102c49061190a565b60405180910390fd5b60008381526002602090815260409182902091516102f69101633ab9b2b960e11b815260040190565b604051602081830303815290604052805190602001208160010160018360040154610321919061194e565b8154811061033157610331611961565b906000526020600020906002020160000160405160200161035291906119b1565b60405160208183030381529060405280519060200120146103b55760405162461bcd60e51b815260206004820152601c60248201527f4e6f206d65737361676520746f2061646420636f6e7465787420746f0000000060448201526064016102c4565b600081600101600183600401546103cc919061194e565b815481106103dc576103dc611961565b9060005260206000209060020201905060008160010180546103fd90611977565b80601f016020809104026020016040519081016040528092919081815260200182805461042990611977565b80156104765780601f1061044b57610100808354040283529160200191610476565b820191906000526020600020905b81548152906001019060200180831161045957829003601f168201915b505050505090506000855111156104aa57806040516020016104989190611a27565b60405160208183030381529060405290505b60005b85518110156104fc57818682815181106104c9576104c9611961565b60200260200101516040516020016104e2929190611a5f565b60408051601f1981840301815291905291506001016104ad565b506001820161050b8282611aea565b50600554604051633c38a5f560e01b81526001600160a01b0390911690633c38a5f59061053f908990600690600401611c27565b6020604051808303816000875af115801561055e573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105829190611d38565b50825460405187916001600160a01b0316907f9697c88a6be3b3ed5062f2dcbd719a10914832320686f14e24f7756210a6685e90600090a3505050505050565b6004546001600160a01b031633146106125760405162461bcd60e51b815260206004820152601360248201527221b0b63632b91034b9903737ba1037bbb732b960691b60448201526064016102c4565b6004546001600160a01b0316331461066c5760405162461bcd60e51b815260206004820152601760248201527f43616c6c6572206973206e6f7420746865206f776e657200000000000000000060448201526064016102c4565b600580546001600160a01b0319166001600160a01b0383169081179091556040517f107a9fafffb7ac890f780879e423760c9ffea8dcee8045681f40f542aede2cb890600090a250565b6005546001600160a01b031633146106e05760405162461bcd60e51b81526004016102c49061190a565b60008381526002602090815260408083208151928301909152918152610707908390611302565b6107b9576040805180820182526060808252602080830191825283518085019094526009845268185cdcda5cdd185b9d60ba1b8482015292825284905260018381018054918201815560009081529290922081519192839260029091029091019081906107749082611aea565b50602082015160018201906107899082611aea565b50505060028201805490600061079e83611d51565b909155505050600301805461ff001916610100179055505050565b6003810154600282015460ff909116116107e257600301805461ff001916610100179055505050565b6107ff836020015160405180602001604052806000815250611302565b6108b057604080518082019091526060808252602082015260208085015182820152604080518082019091526009815268185cdcda5cdd185b9d60ba1b8183015282526001808401805491820181556000908152919091208251839260020290910190819061086e9082611aea565b50602082015160018201906108839082611aea565b50505060028201805490600061089883611d51565b90915550505060038101805461ff0019166101001790555b6108cd836040015160405180602001604052806000815250611302565b6109585760055460408085015160608601519151634b04236b60e01b81526001600160a01b0390931692634b04236b9261090e928992909190600401611d6a565b6020604051808303816000875af115801561092d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109519190611d38565b5050505050565b600301805461ff0019166101001790555b505050565b6005546001600160a01b031633146109985760405162461bcd60e51b81526004016102c49061190a565b60008381526002602052604090206003810154610100900460ff16156109f25760405162461bcd60e51b815260206004820152600f60248201526e149d5b881a5cc8199a5b9a5cda1959608a1b60448201526064016102c4565b6000839050610a108360405180602001604052806000815250611302565b610a175750815b60408051808201825260608082526020808301918252835180850190945260048452633ab9b2b960e11b848201529282528390526001848101805491820181556000908152929092208151919283926002909102909101908190610a7b9082611aea565b5060208201516001820190610a909082611aea565b505050600283018054906000610aa583611d51565b9091555050600554604051633c38a5f560e01b81526001600160a01b0390911690633c38a5f590610add908990600690600401611c27565b6020604051808303816000875af1158015610afc573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610b209190611d38565b50505050505050565b60008054610b3690611977565b80601f0160208091040260200160405190810160405280929190818152602001828054610b6290611977565b8015610baf5780601f10610b8457610100808354040283529160200191610baf565b820191906000526020600020905b815481529060010190602001808311610b9257829003601f168201915b505050505081565b6004546001600160a01b03163314610c075760405162461bcd60e51b815260206004820152601360248201527221b0b63632b91034b9903737ba1037bbb732b960691b60448201526064016102c4565b6000815111610c4e5760405162461bcd60e51b81526020600482015260136024820152724349442063616e6e6f7420626520656d70747960681b60448201526064016102c4565b6001610c5a8282611aea565b5080604051610c699190611d9f565b604051908190038120907f25f99356a5ff3d29e95df0906ba17b40b7bb5c86a372ca12d27fcf3ce537f1ab90600090a250565b6003805460009081526002602081815260408084208054336001600160a01b0319909116178155948501805493860185905561ffff1990931660ff871617909255815180830190925260608083529082015290919060008054610cfe90611977565b80601f0160208091040260200160405190810160405280929190818152602001828054610d2a90611977565b8015610d775780601f10610d4c57610100808354040283529160200191610d77565b820191906000526020600020905b815481529060010190602001808311610d5a57829003601f168201915b505050506020808401929092525060408051808201909152600681526573797374656d60d01b81830152825260018084018054918201815560009081529190912082518392600202909101908190610dcf9082611aea565b5060208201516001820190610de49082611aea565b505050600482018054906000610df983611d51565b9091555050604080518082018252606081526020808201889052825180840190935260048352633ab9b2b960e11b838201529181526001848101805491820181556000908152929092208151919283926002909102909101908190610e5e9082611aea565b5060208201516001820190610e739082611aea565b505050600483018054906000610e8883611d51565b9091555050600354610e9b816001611dbb565b6003556001805460009190610eaf90611977565b90501115610f6f5760055460405163a252a95160e01b81526001600160a01b039091169063a252a95190610eef9084906001908c90600290600401611dce565b6020604051808303816000875af1158015610f0e573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610f329190611d38565b50835460405182916001600160a01b0316907f9697c88a6be3b3ed5062f2dcbd719a10914832320686f14e24f7756210a6685e90600090a361101e565b600554604051633c38a5f560e01b81526001600160a01b0390911690633c38a5f590610fa2908490600690600401611c27565b6020604051808303816000875af1158015610fc1573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610fe59190611d38565b50835460405182916001600160a01b0316907f9697c88a6be3b3ed5062f2dcbd719a10914832320686f14e24f7756210a6685e90600090a35b93505050505b92915050565b6000818152600260205260408120600101546060919067ffffffffffffffff8111156110585761105861135b565b60405190808252806020026020018201604052801561108b57816020015b60608152602001906001900390816110765790505b50905060005b60008481526002602052604090206001015481101561118c5760008481526002602052604090206001018054829081106110cd576110cd611961565b906000526020600020906002020160010180546110e990611977565b80601f016020809104026020016040519081016040528092919081815260200182805461111590611977565b80156111625780601f1061113757610100808354040283529160200191611162565b820191906000526020600020905b81548152906001019060200180831161114557829003601f168201915b505050505082828151811061117957611179611961565b6020908102919091010152600101611091565b5092915050565b6000818152600260205260408120600101546060919067ffffffffffffffff8111156111c1576111c161135b565b6040519080825280602002602001820160405280156111f457816020015b60608152602001906001900390816111df5790505b50905060005b60008481526002602052604090206001015481101561118c57600084815260026020526040902060010180548290811061123657611236611961565b9060005260206000209060020201600001805461125290611977565b80601f016020809104026020016040519081016040528092919081815260200182805461127e90611977565b80156112cb5780601f106112a0576101008083540402835291602001916112cb565b820191906000526020600020905b8154815290600101906020018083116112ae57829003601f168201915b50505050508282815181106112e2576112e2611961565b60209081029190910101526001016111fa565b60018054610b3690611977565b6000816040516020016113159190611d9f565b604051602081830303815290604052805190602001208360405160200161133c9190611d9f565b6040516020818303038152906040528051906020012014905092915050565b634e487b7160e01b600052604160045260246000fd5b604051610160810167ffffffffffffffff811182821017156113955761139561135b565b60405290565b604051601f8201601f1916810167ffffffffffffffff811182821017156113c4576113c461135b565b604052919050565b600082601f8301126113dd57600080fd5b813567ffffffffffffffff8111156113f7576113f761135b565b61140a601f8201601f191660200161139b565b81815284602083860101111561141f57600080fd5b816020850160208301376000918101602001919091529392505050565b60008060006060848603121561145157600080fd5b8335925060208085013567ffffffffffffffff8082111561147157600080fd5b818701915087601f83011261148557600080fd5b8135818111156114975761149761135b565b8060051b6114a685820161139b565b918252838101850191858101908b8411156114c057600080fd5b86860192505b838310156114fc578235858111156114de5760008081fd5b6114ec8d89838a01016113cc565b83525091860191908601906114c6565b9750505050604087013592508083111561151557600080fd5b5050611523868287016113cc565b9150509250925092565b60006020828403121561153f57600080fd5b5035919050565b60006020828403121561155857600080fd5b81356001600160a01b038116811461156f57600080fd5b9392505050565b803567ffffffffffffffff8116811461158e57600080fd5b919050565b803563ffffffff8116811461158e57600080fd5b6000806000606084860312156115bc57600080fd5b83359250602084013567ffffffffffffffff808211156115db57600080fd5b9085019061016082880312156115f057600080fd5b6115f8611371565b82358281111561160757600080fd5b611613898286016113cc565b82525060208301358281111561162857600080fd5b611634898286016113cc565b60208301525060408301358281111561164c57600080fd5b611658898286016113cc565b60408301525060608301358281111561167057600080fd5b61167c898286016113cc565b60608301525061168e60808401611576565b608082015260a0830135828111156116a557600080fd5b6116b1898286016113cc565b60a08301525060c0830135828111156116c957600080fd5b6116d5898286016113cc565b60c08301525060e0830135828111156116ed57600080fd5b6116f9898286016113cc565b60e08301525061010061170d818501611593565b9082015261012061171f848201611593565b90820152610140611731848201611593565b908201529350604086013591508082111561174b57600080fd5b50611523868287016113cc565b60008060006060848603121561176d57600080fd5b83359250602084013567ffffffffffffffff8082111561178c57600080fd5b611798878388016113cc565b9350604086013591508082111561174b57600080fd5b60005b838110156117c95781810151838201526020016117b1565b50506000910152565b600081518084526117ea8160208601602086016117ae565b601f01601f19169290920160200192915050565b60208152600061156f60208301846117d2565b60006020828403121561182357600080fd5b813567ffffffffffffffff81111561183a57600080fd5b611846848285016113cc565b949350505050565b6000806040838503121561186157600080fd5b823567ffffffffffffffff81111561187857600080fd5b611884858286016113cc565b925050602083013560ff8116811461189b57600080fd5b809150509250929050565b600060208083016020845280855180835260408601915060408160051b87010192506020870160005b828110156118fd57603f198886030184526118eb8583516117d2565b945092850192908501906001016118cf565b5092979650505050505050565b60208082526014908201527343616c6c6572206973206e6f74206f7261636c6560601b604082015260600190565b634e487b7160e01b600052601160045260246000fd5b8181038181111561102457611024611938565b634e487b7160e01b600052603260045260246000fd5b600181811c9082168061198b57607f821691505b6020821081036119ab57634e487b7160e01b600052602260045260246000fd5b50919050565b60008083546119bf81611977565b600182811680156119d757600181146119ec57611a1b565b60ff1984168752821515830287019450611a1b565b8760005260208060002060005b85811015611a125781548a8201529084019082016119f9565b50505082870194505b50929695505050505050565b60008251611a398184602087016117ae565b7305052932b632bb30b73a1031b7b73a32bc3a1d0560611b920191825250601401919050565b60008351611a718184602088016117ae565b835190830190611a858183602088016117ae565b600560f91b9101908152600101949350505050565b601f821115610969576000816000526020600020601f850160051c81016020861015611ac35750805b601f850160051c820191505b81811015611ae257828155600101611acf565b505050505050565b815167ffffffffffffffff811115611b0457611b0461135b565b611b1881611b128454611977565b84611a9a565b602080601f831160018114611b4d5760008415611b355750858301515b600019600386901b1c1916600185901b178555611ae2565b600085815260208120601f198616915b82811015611b7c57888601518255948401946001909101908401611b5d565b5085821015611b9a5787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b60008154611bb781611977565b808552602060018381168015611bd45760018114611bee57611c1c565b60ff1985168884015283151560051b880183019550611c1c565b866000528260002060005b85811015611c145781548a8201860152908301908401611bf9565b890184019650505b505050505092915050565b8281526040602082015260006101a0806040840152611c4a6101e0840185611baa565b600185015460000b6060850152603f1984820381016080860152611c718260028801611baa565b600387015463ffffffff811660a088015260201c60000b60c0870152858103820160e08701529150611ca68260048801611baa565b915060058601546101008601528085830301610120860152611ccb8260068801611baa565b9150600786015461014086015260088601546101608601528085830301610180860152611cfb8260098801611baa565b9150808583030183860152611d1382600a8801611baa565b925080858403016101c08601525050611d2f81600b8601611baa565b95945050505050565b600060208284031215611d4a57600080fd5b5051919050565b600060018201611d6357611d63611938565b5060010190565b838152606060208201526000611d8360608301856117d2565b8281036040840152611d9581856117d2565b9695505050505050565b60008251611db18184602087016117ae565b9190910192915050565b8082018082111561102457611024611938565b848152608060208201526000611de76080830186611baa565b8281036040840152611df981866117d2565b91505063ffffffff831660608301529594505050505056fea2646970667358221220b82ec165b805ca08c2855514d892512e180abdac9c34f38f19430131f85b4ba564736f6c63430008180033",
+      devdoc: {
+        kind: "dev",
+        methods: {},
+        version: 1,
+      },
+      userdoc: {
+        kind: "user",
+        methods: {},
+        version: 1,
+      },
+      storageLayout: {
+        storage: [
+          {
+            astId: 4,
+            contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+            label: "prompt",
+            offset: 0,
+            slot: "0",
+            type: "t_string_storage",
+          },
+          {
+            astId: 6,
+            contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+            label: "knowledgeBase",
+            offset: 0,
+            slot: "1",
+            type: "t_string_storage",
+          },
+          {
+            astId: 31,
+            contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+            label: "agentRuns",
+            offset: 0,
+            slot: "2",
+            type: "t_mapping(t_uint256,t_struct(AgentRun)26_storage)",
+          },
+          {
+            astId: 33,
+            contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+            label: "agentRunCount",
+            offset: 0,
+            slot: "3",
+            type: "t_uint256",
+          },
+          {
+            astId: 45,
+            contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+            label: "owner",
+            offset: 0,
+            slot: "4",
+            type: "t_address",
+          },
+          {
+            astId: 47,
+            contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+            label: "oracleAddress",
+            offset: 0,
+            slot: "5",
+            type: "t_address",
+          },
+          {
+            astId: 54,
+            contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+            label: "config",
+            offset: 0,
+            slot: "6",
+            type: "t_struct(OpenAiRequest)937_storage",
+          },
+        ],
+        types: {
+          t_address: {
+            encoding: "inplace",
+            label: "address",
+            numberOfBytes: "20",
+          },
+          "t_array(t_struct(Message)11_storage)dyn_storage": {
+            base: "t_struct(Message)11_storage",
+            encoding: "dynamic_array",
+            label: "struct HateSpeechAgent.Message[]",
+            numberOfBytes: "32",
+          },
+          t_bool: {
+            encoding: "inplace",
+            label: "bool",
+            numberOfBytes: "1",
+          },
+          t_int8: {
+            encoding: "inplace",
+            label: "int8",
+            numberOfBytes: "1",
+          },
+          "t_mapping(t_uint256,t_struct(AgentRun)26_storage)": {
+            encoding: "mapping",
+            key: "t_uint256",
+            label: "mapping(uint256 => struct HateSpeechAgent.AgentRun)",
+            numberOfBytes: "32",
+            value: "t_struct(AgentRun)26_storage",
+          },
+          t_string_storage: {
+            encoding: "bytes",
+            label: "string",
+            numberOfBytes: "32",
+          },
+          "t_struct(AgentRun)26_storage": {
+            encoding: "inplace",
+            label: "struct HateSpeechAgent.AgentRun",
+            members: [
+              {
+                astId: 13,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "owner",
+                offset: 0,
+                slot: "0",
+                type: "t_address",
+              },
+              {
+                astId: 17,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "messages",
+                offset: 0,
+                slot: "1",
+                type: "t_array(t_struct(Message)11_storage)dyn_storage",
+              },
+              {
+                astId: 19,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "responsesCount",
+                offset: 0,
+                slot: "2",
+                type: "t_uint256",
+              },
+              {
+                astId: 21,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "max_iterations",
+                offset: 0,
+                slot: "3",
+                type: "t_uint8",
+              },
+              {
+                astId: 23,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "is_finished",
+                offset: 1,
+                slot: "3",
+                type: "t_bool",
+              },
+              {
+                astId: 25,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "messagesCount",
+                offset: 0,
+                slot: "4",
+                type: "t_uint256",
+              },
+            ],
+            numberOfBytes: "160",
+          },
+          "t_struct(Message)11_storage": {
+            encoding: "inplace",
+            label: "struct HateSpeechAgent.Message",
+            members: [
+              {
+                astId: 8,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "role",
+                offset: 0,
+                slot: "0",
+                type: "t_string_storage",
+              },
+              {
+                astId: 10,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "content",
+                offset: 0,
+                slot: "1",
+                type: "t_string_storage",
+              },
+            ],
+            numberOfBytes: "64",
+          },
+          "t_struct(OpenAiRequest)937_storage": {
+            encoding: "inplace",
+            label: "struct IOracle.OpenAiRequest",
+            members: [
+              {
+                astId: 912,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "model",
+                offset: 0,
+                slot: "0",
+                type: "t_string_storage",
+              },
+              {
+                astId: 914,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "frequencyPenalty",
+                offset: 0,
+                slot: "1",
+                type: "t_int8",
+              },
+              {
+                astId: 916,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "logitBias",
+                offset: 0,
+                slot: "2",
+                type: "t_string_storage",
+              },
+              {
+                astId: 918,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "maxTokens",
+                offset: 0,
+                slot: "3",
+                type: "t_uint32",
+              },
+              {
+                astId: 920,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "presencePenalty",
+                offset: 4,
+                slot: "3",
+                type: "t_int8",
+              },
+              {
+                astId: 922,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "responseFormat",
+                offset: 0,
+                slot: "4",
+                type: "t_string_storage",
+              },
+              {
+                astId: 924,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "seed",
+                offset: 0,
+                slot: "5",
+                type: "t_uint256",
+              },
+              {
+                astId: 926,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "stop",
+                offset: 0,
+                slot: "6",
+                type: "t_string_storage",
+              },
+              {
+                astId: 928,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "temperature",
+                offset: 0,
+                slot: "7",
+                type: "t_uint256",
+              },
+              {
+                astId: 930,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "topP",
+                offset: 0,
+                slot: "8",
+                type: "t_uint256",
+              },
+              {
+                astId: 932,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "tools",
+                offset: 0,
+                slot: "9",
+                type: "t_string_storage",
+              },
+              {
+                astId: 934,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "toolChoice",
+                offset: 0,
+                slot: "10",
+                type: "t_string_storage",
+              },
+              {
+                astId: 936,
+                contract: "contracts/HateSpeechAgent.sol:HateSpeechAgent",
+                label: "user",
+                offset: 0,
+                slot: "11",
+                type: "t_string_storage",
+              },
+            ],
+            numberOfBytes: "384",
+          },
+          t_uint256: {
+            encoding: "inplace",
+            label: "uint256",
+            numberOfBytes: "32",
+          },
+          t_uint32: {
+            encoding: "inplace",
+            label: "uint32",
+            numberOfBytes: "4",
+          },
+          t_uint8: {
+            encoding: "inplace",
+            label: "uint8",
+            numberOfBytes: "1",
+          },
+        },
+      },
     },
   },
 } as const;
