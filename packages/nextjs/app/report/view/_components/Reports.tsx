@@ -52,7 +52,7 @@ export const Reports = ({ tab, setReport }: Props) => {
         getRunStatus();
         getMessage();
         if (getMessageHistoryContent && isFinished) {
-          setReportData(getMessageHistoryContent[0]);
+          setReportData(getMessageHistoryContent[2]);
           setIsRunFinished(isFinished);
         }
       }, 2000);
