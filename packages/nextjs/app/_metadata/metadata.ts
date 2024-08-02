@@ -214,6 +214,7 @@ export const proposals = {
             "gameName": "gameName-1",
             "status": "Classified or Pending",
             "isProposal": true,
+            "isHateSpeech": true,
             "protectedCharacteristics": null
         },
         {
@@ -224,13 +225,8 @@ export const proposals = {
             "gameName": "gameName-2",
             "status": "Classified or Pending",
             "isProposal": true,
-            "protectedCharacteristics":
-            {
-                "A": 1.0,
-                "B": 2.0,
-                "C": 3.0,
-                "D": 10
-            }
+            "isHateSpeech": true,
+            "protectedCharacteristics":["A", "B", "C", "D"],
         },
         {
             "hateSpeech": "foo-bar example of hate speech targetting a particular protected characteristic",
@@ -240,13 +236,8 @@ export const proposals = {
             "gameName": "gameName",
             "status": "Classified or Pending",
             "isProposal": true,
-            "protectedCharacteristics":
-            {
-                "A": 1.0,
-                "B": 2.0,
-                "C": 3.0,
-                "D": 10
-            }
+            "isHateSpeech": true,
+            "protectedCharacteristics":["A", "B", "C", "D"],
         },
         {
             "hateSpeech": "foo-bar example of hate speech targetting a particular protected characteristic",
@@ -256,13 +247,8 @@ export const proposals = {
             "gameName": "gameName",
             "status": "Classified or Pending",
             "isProposal": true,
-            "protectedCharacteristics":
-            {
-                "A": 1.0,
-                "B": 2.0,
-                "C": 3.0,
-                "D": 10
-            }
+            "isHateSpeech": true,
+            "protectedCharacteristics":["A", "B", "C", "D"],
         },
         {
             "hateSpeech": "foo-bar example of hate speech targetting a particular protected characteristic",
@@ -272,13 +258,8 @@ export const proposals = {
             "gameName": "gameName",
             "status": "Classified or Pending",
             "isProposal": true,
-            "protectedCharacteristics":
-            {
-                "A": 1.0,
-                "B": 2.0,
-                "C": 3.0,
-                "D": 10
-            }
+            "isHateSpeech": true,
+            "protectedCharacteristics":["A", "B", "C", "D"],
         },
         {
             "hateSpeech": "foo-bar example of hate speech targetting a particular protected characteristic",
@@ -288,15 +269,8 @@ export const proposals = {
             "gameName": "gameName",
             "status": "Classified or Pending",
             "isProposal": true,
-            "protectedCharacteristics":
-            {
-                "A": 1.0,
-                "B": 2.0,
-                "C": 3.0,
-                "D": 10
-
-
-            }
+            "isHateSpeech": true,
+            "protectedCharacteristics":["A", "B", "C", "D"]
         },
     ],
 }
