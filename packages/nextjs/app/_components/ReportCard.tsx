@@ -8,15 +8,22 @@ type CardProps = Partial<{
 
 
 export const ReportCard = (props: CardProps) => {
-    const { gameName, hateSpeech, ignOffender, ignReporter } = props
+    const { gameName, hateSpeech, ignOffender, ignReporter, status, isHateSpeech } = props
     const { setReport = console.log, isProposal = false, ...rest } = props
+
+    const getClassificationClass = (label: string) => {
+        return label === "Classified" ? 
+                    isHateSpeech ? "badge-success" : "badge-error"
+                    : "badge-warning"
+    }
+
     return (
         <div onClick={() => setReport(rest)} className="card bg-primary text-primary-content w-96">
             <div className="card-body">
                 <div className="card-title flex flex-col">
                     <h2 className="flex flex-row justify-between w-full">
                         <span>{gameName}</span>
-                        <span className="badge badge-success">Classfied</span>
+                        <span className={`badge ${getClassificationClass(status)}`}>{status}</span>
                     </h2>
                     <div className="divider w-full"></div>
                 </div>

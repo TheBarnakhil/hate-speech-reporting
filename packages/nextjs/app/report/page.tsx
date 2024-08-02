@@ -1,11 +1,16 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { SaveDataToPinata } from "../lib/pinata";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
+import { useWriteContract } from "wagmi";
+import { useContract } from "~~/context/contract";
+import externalContracts from "~~/contracts/externalContract";
+import { useTransactor } from "~~/hooks/scaffold-eth";
 
-const pinataSDK = require('@pinata/sdk');
-
-type IReportFields = {
+export type IReportFields = {
   hateSpeech: string;
   ignReporter: string;
   ignOffender: string;
@@ -13,7 +18,15 @@ type IReportFields = {
 };
 
 const Report = () => {
-  const { isConnected, address } = useAccount();
+  const { isConnected, address} = useAccount();
+  const { setRunId,  HS_definition, hsExamplesDict, setCid } = useContract();
+  const chainID = 696969;
+  const { address: contractAddress, abi } = externalContracts[chainID].HateSpeechAgent;
+  const { writeContractAsync } = useWriteContract();
+
+  const router = useRouter();
+
+  const [reportData, setReportData] = useState<any>({});
 
   const {
     register,
@@ -21,38 +34,45 @@ const Report = () => {
     formState: { errors },
   } = useForm<IReportFields>();
 
+  const writeTxn: any = useTransactor();
 
-  const pinata = new pinataSDK(process.env.NEXT_PUBLIC_API_Key, process.env.NEXT_PUBLIC_API_Secret);
+  const handleWrite = async (speech: string) => {
+    const prompt = `Consider the following definition: '${HS_definition}'. 
+    Consider the following examples:'${hsExamplesDict}'.
+    Classify the following fragment from a chat as hate speech or not hate speech, with respect to one of the following protected characteristics: '{protected_characteristics_str}'.
+    Message: '${speech}'.
+    The output should only contain 3 elements: "hate speech" or "not hate speech", protected characteristic label, and the probability with two decimal points.
+    `;
 
-  const onSubmit: SubmitHandler<IReportFields> = async (data: IReportFields) => {
-    console.log(data, "submitted data")
-
-    const body = {
-      "pinataMetadata": {
-        "name": data.gameName,
-        "keyvalues": {
-          ...data,
-          "status": "Pending",
-          "protectedCharacteristics": "",
-          "isProposal": 0,
-          "walletAddress": address
-        }
-      },
-      "pinataContent": data
+    if (writeContractAsync) {
+      try {
+        const makeWriteWithParams = () =>
+          writeContractAsync({
+            address: contractAddress,
+            functionName: "runAgent",
+            abi: abi,
+            args: [prompt, 2],
+          });
+        const agentRun = await writeTxn(makeWriteWithParams);
+        return agentRun;
+      } catch (e: any) {
+        console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
+      }
     }
-
-    const options = {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_JWT}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    };
-
-    fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', options)
-      .then(response => response.json())
-      .then(response => console.log(response, "response"))
-      .catch(err => console.error(err));
   };
 
+  const onSubmit: SubmitHandler<IReportFields> = async (data: IReportFields) => {
+    setReportData(data);
+    const response = await SaveDataToPinata(data, address as string);
+    setCid(response);
+    try {
+      const agentRunner = await handleWrite(data.hateSpeech);
+      setRunId(agentRunner?.runId);
+      router.push("/report/view");
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

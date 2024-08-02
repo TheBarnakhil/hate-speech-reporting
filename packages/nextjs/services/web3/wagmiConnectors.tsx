@@ -11,7 +11,7 @@ import { rainbowkitBurnerWallet } from "burner-connector";
 import * as chains from "viem/chains";
 import scaffoldConfig from "~~/scaffold.config";
 
-const { onlyLocalBurnerWallet, targetNetworks } = scaffoldConfig;
+const { targetNetworks } = scaffoldConfig;
 
 const wallets = [
   metaMaskWallet,
@@ -20,14 +20,11 @@ const wallets = [
   coinbaseWallet,
   rainbowWallet,
   safeWallet,
-  ...(!targetNetworks.some(network => network.id !== (chains.hardhat as chains.Chain).id) || !onlyLocalBurnerWallet
+  ...(!targetNetworks.some(network => network.id !== (chains.hardhat as chains.Chain).id)
     ? [rainbowkitBurnerWallet]
     : []),
 ];
 
-/**
- * wagmi connectors for the wagmi context
- */
 export const wagmiConnectors = connectorsForWallets(
   [
     {
