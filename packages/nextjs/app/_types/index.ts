@@ -5,5 +5,6 @@ export type IReport = {
     walletAddress: string,
     gameName: string,
     status: string,
-    protectedCharacteristics : Record<string,number> | null
+    isHateSpeech: boolean,
+    protectedCharacteristics : Array<string> | null
 }

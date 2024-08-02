@@ -11,7 +11,7 @@ export const ReportModal = (props: Partial<IReport> | null) => {
                 <p className="py-4">{"Offender : " + props?.ignOffender}</p>
                 <p className="py-4">{props?.hateSpeech}</p>
                 {
-                    Object.keys(props?.protectedCharacteristics || {}).length !== 0 && props?.protectedCharacteristics && (
+                    props?.protectedCharacteristics?.length !== 0 && props?.protectedCharacteristics && (
                         <div className="w-1/3">
                             <table className="table">
                                 {/* head */}
@@ -24,12 +24,12 @@ export const ReportModal = (props: Partial<IReport> | null) => {
                                 </thead>
                                 <tbody>
                                     {
-                                        Object.keys(props?.protectedCharacteristics || {})?.map((pc, index) => {
+                                        props?.protectedCharacteristics?.map((pc, index) => {
                                             return(
                                                 <tr key={pc+index}>
                                                     <th>{index+1}</th>
                                                     <td>{pc}</td>
-                                                    <td>{props?.protectedCharacteristics && props.protectedCharacteristics[pc]}</td>
+                                                    <td>{1}</td>
                                                 </tr>
                                             )
                                         })
