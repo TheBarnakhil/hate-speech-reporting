@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { IReportFields } from "../report/page";
 
 export const SaveDataToPinata = async (data: IReportFields, walletAddress: string) => {
@@ -117,8 +118,10 @@ export const UpdateDataOnPinata = async (
       responseData = await response;
     }
 
+    toast.success("Latest report has been classified successfully, please refresh for latest data");
     return responseData;
   } catch (err: any) {
     console.error(err);
+    toast.error("Error classifing report, please try again");
   }
 };
