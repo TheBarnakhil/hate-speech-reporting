@@ -33,11 +33,7 @@ export const FaucetButton = () => {
     if (!address) return;
     try {
       setLoading(true);
-      await faucetTxn({
-        account: FAUCET_ADDRESS,
-        to: address,
-        value: parseEther(NUM_OF_ETH),
-      });
+      await faucetTxn(async () => address as `0x${string}`);
       setLoading(false);
     } catch (error) {
       console.error("⚡️ ~ file: FaucetButton.tsx:sendETH ~ error", error);

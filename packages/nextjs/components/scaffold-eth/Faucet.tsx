@@ -60,7 +60,7 @@ export const Faucet = () => {
     }
     try {
       setLoading(true);
-      await faucetTxn(async () => inputAddress);
+      await faucetTxn(async () => inputAddress as `0x${string}`);
       setLoading(false);
       setInputAddress(undefined);
       setSendValue("");

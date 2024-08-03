@@ -72,7 +72,7 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(
               >
             | undefined,
         );
-      const writeTxResult = await writeTx(makeWriteWithParams, { blockConfirmations, onBlockConfirmation });
+      const writeTxResult = await writeTx(makeWriteWithParams);
 
       return writeTxResult;
     } catch (e: any) {
