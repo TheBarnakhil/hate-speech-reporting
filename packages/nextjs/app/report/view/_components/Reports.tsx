@@ -7,7 +7,9 @@ import { IReport } from "~~/app/_types/index.ts";
 import { useContract } from "~~/context/contract";
 import externalContracts from "~~/contracts/externalContract";
 import { useAccount } from "wagmi";
-import { fetchDataByGroupId } from "~~/app/lib/pinata";
+import { fetchDataByGroupId , fetchAllGroups, createGroup} from "~~/app/lib/pinata";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
+
 
 type Props = {
   tab: number;
@@ -15,9 +17,10 @@ type Props = {
 };
 
 export const Reports = ({ tab, setReport }: Props) => {
-  const { runId, setReportData, setIsRunFinished, groupId } = useContract();
+  const { runId, setReportData, setIsRunFinished, groupId, setGroupId, setUserId } = useContract();
   const chainID = 696969;
   const { address: contractAddress, abi } = externalContracts[chainID].HateSpeechAgent;
+  const {address} = useAccount()
 
   const [metadata, setMetadata] = useState<{ reports: Array<IReport> }>({ reports: [] });
 
@@ -63,6 +66,34 @@ export const Reports = ({ tab, setReport }: Props) => {
       return () => clearInterval(intervalId);
     }
   }, [runId, isFinished, getMessageHistoryContent]);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const issuerId = address && `HS-${address}`;
+     
+        if (issuerId) {
+          const issuerProfile = await fetchAllGroups(issuerId);
+
+          if (issuerProfile.length > 0) {
+            setUserId(issuerProfile[0].user_id);
+            setGroupId(issuerProfile[0].id);
+             
+
+          } else {
+            const groupResponse = await createGroup(issuerId);
+            setUserId(groupResponse.user_id);
+            setGroupId(groupResponse.id);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user profile or creating group:", error);
+      }
+    };
+
+    fetchUserProfile();
+  
+  }, [address]);
 
   useEffect(() => {
     // if(runId && isFinished) {
