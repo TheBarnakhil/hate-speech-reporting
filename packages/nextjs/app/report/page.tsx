@@ -1,8 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SaveDataToPinata } from "../lib/pinata";
+import {
+  SaveDataToPinata,
+  createGroup,
+  fetchAllGroups,
+  fetchDataByGroupId,
+  fetchGroupDetails,
+  updateGroupCIDs,
+} from "../lib/pinata";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 import { useWriteContract } from "wagmi";
@@ -18,8 +25,8 @@ export type IReportFields = {
 };
 
 const Report = () => {
-  const { isConnected, address} = useAccount();
-  const { setRunId,  HS_definition, hsExamplesDict, setCid } = useContract();
+  const { isConnected, address } = useAccount();
+  const { setRunId, HS_definition, hsExamplesDict, setCid, setGroupId, setUserId, groupId } = useContract();
   const chainID = 696969;
   const { address: contractAddress, abi } = externalContracts[chainID].HateSpeechAgent;
   const { writeContractAsync } = useWriteContract();
@@ -35,6 +42,35 @@ const Report = () => {
   } = useForm<IReportFields>();
 
   const writeTxn: any = useTransactor();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const issuerId = address && `HS-${address}`;
+     
+        if (issuerId) {
+          const issuerProfile = await fetchAllGroups(issuerId);
+
+          if (issuerProfile.length > 0) {
+            setUserId(issuerProfile[0].user_id);
+            setGroupId(issuerProfile[0].id);
+             
+
+          } else {
+            const groupResponse = await createGroup(issuerId);
+            setUserId(groupResponse.user_id);
+            setGroupId(groupResponse.id);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user profile or creating group:", error);
+      }
+    };
+
+    fetchUserProfile();
+  
+  }, [address]);
+
 
   const handleWrite = async (speech: string) => {
     const prompt = `Consider the following definition: '${HS_definition}'. 
@@ -68,6 +104,8 @@ const Report = () => {
     try {
       const agentRunner = await handleWrite(data.hateSpeech);
       setRunId(agentRunner?.runId);
+      await updateGroupCIDs(groupId as string, [response]);
+
       router.push("/report/view");
     } catch (err: any) {
       console.log(err);

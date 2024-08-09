@@ -16,6 +16,10 @@ interface ContractContextProps {
   setReportData: React.Dispatch<any>;
   setIsRunFinished: React.Dispatch<React.SetStateAction<boolean | undefined>>;
   setCid: React.Dispatch<React.SetStateAction<string>>;
+  setUserId: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setGroupId: React.Dispatch<React.SetStateAction<string | undefined>>;
+  userId: string | undefined;
+  groupId: string | undefined
 }
 
 const ContractContext = createContext<ContractContextProps | undefined>(undefined);
@@ -30,6 +34,9 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
   const [isRunFinished, setIsRunFinished] = useState<boolean>();
   const [runId, setRunId] = useState<bigint>();
   const [walletAddress, setWalletAddress] = useState("");
+  const [userId, setUserId] = useState<string | undefined>();
+  const [groupId, setGroupId] = useState<string | undefined>();
+
 
   useEffect(() => {
     if (isRunFinished && reportData && cid) {
@@ -99,6 +106,10 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         setReportData,
         setIsRunFinished,
         setCid,
+        setGroupId,
+        setUserId,
+        userId,
+        groupId
       }}
     >
       {children}
