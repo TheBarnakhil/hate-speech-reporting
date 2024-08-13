@@ -65,8 +65,6 @@ export const Reports = ({ tab, setReport }: Props) => {
     useEffect(() => {
         // if(runId && isFinished) {
 
-            console.log("Fetching reports from Pinata", process.env.NEXT_PUBLIC_PINATA_JWT);
-
             const options = { method: "GET", headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}` } };
     
             fetch("https://api.pinata.cloud/data/pinList", options)
