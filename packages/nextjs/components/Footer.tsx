@@ -52,7 +52,7 @@ export const Footer = () => {
         <ul className="menu menu-horizontal w-full">
           <div className="flex justify-center items-center gap-2 text-sm w-full">
             <div className="flex flex-col">
-              <Image src={bot} alt="bot" width={50} height={50} />
+              <Image src={people} alt="bot" width={50} height={50} />
               <span className="text-xs">Community</span>
             </div>
             <div className="flex flex-col">

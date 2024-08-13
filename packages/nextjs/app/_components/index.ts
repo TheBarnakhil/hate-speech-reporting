@@ -1,1 +1,2 @@
-export * from './ReportCard'
+export * from './ReportCard';
+export * from './Chat';
