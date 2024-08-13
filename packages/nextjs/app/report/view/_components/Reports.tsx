@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useReadContract } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { ReportCard } from "~~/app/_components";
 import { IReport } from "~~/app/_types/index.ts";
 import { useContract } from "~~/context/contract";
@@ -19,6 +19,8 @@ export const Reports = ({ tab, setReport }: Props) => {
     const { runId, setReportData, setIsRunFinished } = useContract();
     const chainID = 696969;
     const { address: contractAddress, abi } = externalContracts[chainID].HateSpeechAgent;
+
+    const {address} = useAccount();
 
     const [metadata, setMetadata] = useState<{ reports: Array<IReport> }>({reports: []});
 
@@ -114,7 +116,7 @@ export const Reports = ({ tab, setReport }: Props) => {
                 ))}
             {tab === 2 &&
                 metadata.reports
-                    .filter(report => report.ignReporter === "foo-player")
+                    .filter(report => report.walletAddress === address)
                     .map((report, index) => <ReportCard {...report} setReport={setReport} key={index + report.gameName} />)}
             {tab === 3 &&
                 metadata.reports
