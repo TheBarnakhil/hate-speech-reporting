@@ -1,10 +1,12 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { HomePrompts } from "."
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 type IChatRecord = {
     message: string;
     role: "bot" | "user";
+    link?: string;
 };
 
 type props = {
@@ -64,6 +66,11 @@ export const Home = ({ chat, setChat, setInputDisabled }: props) => {
                         <div key={index} className={`chat chat-${chatRecord.role === "user" ? "end" : "start"}`}>
                             <div className="chat-bubble text-md">
                                 <p>{chatRecord.message}</p>
+                                {
+                                    chatRecord?.link && (
+                                        <Link href={chatRecord.link}>Click here to report</Link>
+                                    )
+                                }
                             </div>
                         </div>
                     ))

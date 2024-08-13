@@ -84,8 +84,8 @@ export const Reports = ({ tab, setReport }: Props) => {
                                 const classification: string = characteristics[0];
                                 if(classification && !classification.includes("not")){
                                     isHateSpeech = true;
+                                    protectedCharacteristics = characteristics.slice(1).map((val:string, index: number) => index % 2 === 0 ? val : null).filter((val: string) => val);
                                 }
-                                protectedCharacteristics = characteristics.slice(1).map((val:string, index: number) => index % 2 === 0 ? val : null).filter((val: string) => val);
                             }
                             if (keyvalues.isProposal === 1) {
                                 isProposal = true;
