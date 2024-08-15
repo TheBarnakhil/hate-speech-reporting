@@ -1,12 +1,17 @@
 ## Mission Statement
 
-We empower people with lived experience of online abuse to leverage AI and Web 3 tools to actively govern and create safer spaces for all.
+We.Lived.It is an experimental tool in decentralised AI. It has been designed in line with the philosophy of Community Curated Models. We are using the context of online gaming but plan to scale this experiment to other online communities. We.Lived.It is a tool for people with lived experience of toxicity or marginalisation to reclaim these spaces.
 
 ## What are we hoping to achieve with this project?
 
-1. Citizen owned and governed AI
-2. Web3 tools for democratisation of ownership and governance
-3. Incorporating “lived experience” for inclusivity, bias reduction, and for designing resilient systems.
+For technology to properly serve people from various communities, it needs to be able to reflect the lived experience of people from those communities. This applies to AI and tools for hate speech recognition.
+
+While we think that, ideally, all people creating technology should be practicing [technoreflexivity](https://kelsienabben.substack.com/p/techno-reflexivity-cf1331278bdc) and that online spaces should be accessible to all, this is not realistic and not necessary. Instead, what we should aim for is greater democratisation of decision-making and tools for sharing people’s lived experience and the knowledge that it provides.
+
+We believe the solution lies in combining the power of technology (AI), methods for organising and governing in an accountable way (web3), and the appreciation of knowledge that lies within all members of a community (lived experience). The result is the Community Curated Model, see diagram below, which is tailored to and respects the values of the community which cooperated in its creation.
+
+<img width="381" alt="Screenshot 2024-08-14 at 22 49 16" src="https://github.com/user-attachments/assets/209fdaa6-57d0-4853-8c4a-943cc0acd96a">
+
 
 ## What does this tool do?
 
