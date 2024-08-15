@@ -45,6 +45,20 @@ Players can challenge the AI agent result. Currently the only case when the chal
 
 The community votes on the proposal to add new protected characteristic. This closes the subjective vs objective cycle, as the individual knows how it felt to be targeted by hate speech, but the community as a whole decides on what are the values that the community want to live by.
 
+## What long-term benefits come from training this model?
+
+**Communication  between Gaming Company and New Markets** 
+
+Historically games have landed differently in different markets. For example, Assassin’s Creed faced backlash due to their negative portrayal of Arabs. Players from these countries could use the agent to build up a formal community-led request to change offensive content. 
+
+**Specific Community Guidelines**
+
+Creating guidelines for how to interact with their communities online to share with the gaming developers. These could serve to be proactive ways to let others know what safe spaces look like for a specific community.
+
+**Trigger Warnings**
+
+Trigger warnings were developed by people from marginalised communities who often blogged about distressing content. The tool could be used to classify in-game content as ‘distressing for X communities or people who’ve experienced X trauma’. These classifications could then be submitted to gaming companies to add trigger warnings.
+
 ## Product Roadmap
 
 **Voting mechanism**
