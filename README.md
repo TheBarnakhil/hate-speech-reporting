@@ -13,7 +13,7 @@ We believe the solution lies in combining the power of technology (AI), methods 
 <img width="381" alt="Screenshot 2024-08-14 at 22 49 16" src="https://github.com/user-attachments/assets/209fdaa6-57d0-4853-8c4a-943cc0acd96a">
 
 
-## Hwo does this tool work?
+## How does this tool work?
 
 A user submits a report to the AI agent. 
 
