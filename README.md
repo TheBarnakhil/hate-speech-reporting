@@ -15,9 +15,9 @@ We believe the solution lies in combining the power of technology (AI), methods 
 
 ## Hwo does this tool work?
 
-User submits a report to the AI agent. 
+A user submits a report to the AI agent. 
 
-AI Agent analyses the report and classifies it either as HATE SPEECH or NOT HATE SPEECH against a specific protected characteristic.
+The AI Agent analyses the report and classifies it either as HATE SPEECH or NOT HATE SPEECH against a specific protected characteristic.
 
 If the report is classified as hate speech, the player earns a Lived Experience (LE+) point. This gives them greater voting power in fine-tuning the AI Agent.
 
