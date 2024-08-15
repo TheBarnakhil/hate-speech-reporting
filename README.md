@@ -15,8 +15,15 @@ We believe the solution lies in combining the power of technology (AI), methods 
 
 ## What does this tool do?
 
-<img width="840" alt="Screenshot 2024-07-01 at 00 51 55" src="https://github.com/TheBarnakhil/hate-speech-reporting/assets/142992581/fcf4a38a-ccad-4be4-b14c-2383bc41c530">
-<img width="833" alt="Screenshot 2024-07-01 at 00 50 21" src="https://github.com/TheBarnakhil/hate-speech-reporting/assets/142992581/cb015d06-6f32-4f17-9c84-5c02f25d21dd">
+User submits a report to the AI agent. 
+
+AI Agent analyses the report and classifies it either as HATE SPEECH or NOT HATE SPEECH against a specific protected characteristic.
+
+If the report is classified as hate speech, the player earns a Lived Experience (LE+) point. This gives them greater voting power in fine-tuning the AI Agent.
+
+For example, if the model doesn't identify the report as hate speech or doesn't identify it under the right protected characteristic, a player can trigger a community vote to fine-tune the model and add an additional hate speech category.
+
+If the vote is successful, the AI Model is updated. The player receives an LE point against the new category.
 
 ## Why is this tool unique?
 
