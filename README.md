@@ -2,7 +2,7 @@
 
 We.Lived.It is an experimental tool in decentralised AI. It has been designed in line with the philosophy of Community Curated Models. We are using the context of online gaming but plan to scale this experiment to other online communities. We.Lived.It is a tool for people with lived experience of toxicity or marginalisation to reclaim these spaces.
 
-## What are we hoping to achieve with this project?
+## What's this project about?
 
 For technology to properly serve people from various communities, it needs to be able to reflect the lived experience of people from those communities. This applies to AI and tools for hate speech recognition.
 
@@ -13,7 +13,7 @@ We believe the solution lies in combining the power of technology (AI), methods 
 <img width="381" alt="Screenshot 2024-08-14 at 22 49 16" src="https://github.com/user-attachments/assets/209fdaa6-57d0-4853-8c4a-943cc0acd96a">
 
 
-## What does this tool do?
+## Hwo does this tool work?
 
 User submits a report to the AI agent. 
 
@@ -45,7 +45,7 @@ Players can challenge the AI agent result. Currently the only case when the chal
 
 The community votes on the proposal to add new protected characteristic. This closes the subjective vs objective cycle, as the individual knows how it felt to be targeted by hate speech, but the community as a whole decides on what are the values that the community want to live by.
 
-## What long-term benefits come from training this model?
+## What long-term benefits come from training a model like this?
 
 **Communication  between Gaming Company and New Markets** 
 
